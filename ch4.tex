@@ -1,13 +1,158 @@
-% \chapter{Theoretical Backgound}
 \chapter{Fundamente teoretice}
 \label{cap:fund-teoretice}
-\
-\subsection{Identificarea de tipare secventiale}
 
-Aici se descriu pe scurt aspecte teoretice pe care se bazează lucrarea. Conținutul acestui capitol trebuie gândit pentru un citor care nu e specializat pe domeniul temei și nu cunoaște chestiunile de bază despre subiect. Pentru un cititor specializat, capitolul poate să stabilească un limbaj comun, relativ la termenii care pot fi interpretați diferit. 
+În cadrul acestui capitol vor fi prezentate elementele care stau la baza metodei descrise în cadrul acestui proiect. În primele doua secțiuni vor fi definite despărțirea în silabe și tiparele secvențiale, urmând ca în a treia secțiune să fie definit conceptul de tipar secvențial frecvent la nivelul cuvintelor.
 
-Acest capitol nu trebuie gândit și scris nici ca un copy-paste din alte surse, nici ca zona de reglaj a numărului de pagini ale lucrării. Deși va conține chestiuni pe care le-ați studiat și voi și pe care v-ați bazat, el trebuie să fie o compilare a surselor folosite, care să aibă sens și relevanță pentru lucrarea voastră. Trebuie să fie o descriere coerentă și logică a unor aspecte care ușurează sau fac posibilă înțelegerea părților următoare ale lucrării. Nu trebuie intrat insă prea mult în detalii, ci spuse doar chestiunile esențiale. 
+\section{Despărțirea în silabe (silabisirea)}
 
-Dacă preluați text, figuri, tabela etc. din sursele de documentare, acestea din urmă trebuie indicate explicit. 
+Prin silabisire se înțelege a procesul de a despărți în silabe un cuvânt. Înainte de a oferi câteva exemple, este necesară o clarificare a conceptului de silabă. 
 
-Reprezintă cca. 10\% din lucrare.
+\begin{defi}
+\textbf{Silaba} se definește ca fiind un segment din lanțul vorbirii compus din unul sau mai multe foneme (sunete elementare) pronunțate neîntrerupt într-un singur efort respirator. Orice silabă are ca element principal inevitabil o vocală sau, în unele limbi, o consoană sonantă). Elementul principal poate fi însoțit de consoane, semivocale sau grupuri consonantice și semivocalice dispuse înainte, după, sau de ambele părți ale acestuia. \footnote{http://ro.wikipedia.org/wiki/Silabă}
+\end{defi} 
+
+Deasemenea, trebuie menționat că silabisirea nu poate fi definită pe baza unui set rigid de reguli, chiar dacă în majoritatea cazurilor există un asemenea set de reguli. Această ambiguitate la nivelul definirii procesului vine din două cauze: 
+\begin{enumerate}
+\item limbile nu sunt construite artificial, iar ambiguitatea este un atribut intrinsec al lor. 
+\item silabisirea este realizată după seturi diferite de reguli, în functie de scopul pentru care este realizată (fonetic sau ortografic).  
+\end{enumerate}
+
+Silabisirea fonetică ilustrează cel mai bine definiția de mai sus, dar când vine vorba de silabisirea ortografică trebuie mentionat ca principala utilitate a acestui tip de despărțire în silabe este acela estetic.
+
+\begin{ex}
+Din punct de vedere fonetic, despărțirea în silabe a cuvântul \textit{inegal} este \textbf{i-ne-gal}, dar din punct de vedere ortografic, utilizând reguli morfologice rezultă despărțirea \textbf{in-e-gal}. 
+\end{ex}
+
+\section{Tipare secventiale frecvente}
+
+Tiparele secventiale frecvente sunt acele tipare care se regasesc în cadrul unei colecții de secvențe ordonate de numar minim de ori. Acest numar va fi referit ulterior și ca \textit{suport minim}. 
+
+In cele ce urmeaza, se va realiza o introducere formală pentru tiparele secvențiale frecvente, urmând ca după această scurtă întroducere să fie ilustrat modul în care o colecție de cuvinte despărțite în silabe poate fi asociată cu o colecție de secvențe.
+
+\begin{defi}
+Fie $I = \{i_1, i_2, ...,i_n\}$ alfabetul (un set distinct de itemi) colecției de secvențe. O \textbf{secvență $S$} este definită ca fiind o listă ordonată de elemented din alfabetul $I$, $<i_{k_1},i_{k_2}, ...,i_{k_m}>$, unde $\forall k_j, 0 \leq j \leq m, k_j \epsilon I$. 
+De exemplu, având alfabetul $I=\{a,b,c,d\}$, o posibilă secvență este $<b,b,a>$.
+\end{defi}
+
+\begin{defi} 
+Printr-o \textbf{colecție de secvențe $S_{db}$} se înțelege un set de tuple de forma $(S_{id}, S)$, unde $S_{id}$ este un identificator unic iar $S$ este o secvență. 
+\end{defi}
+
+\begin{ex}
+Un exemplu de astfel colecție de secvențe este prezentat în cadrul tabelului \ref{table:sdb}
+\end{ex}
+
+\begin{table}[h]
+\centering    
+\begin{tabular}{|c|c|}    
+\hline      
+$S_{id}$ & $S$ \\
+\hline                    
+1 & $<a,b,c,b,a>$ \\
+2 & $<a,a,a,b,c>$ \\
+3 & $<b,b,b,b,a>$ \\
+4 & $<c,b,b,a>$ \\
+\hline                              
+\end{tabular}
+\caption{Exemplu de colecție de secvențe}
+\label{table:sdb}               
+\end{table}
+
+Despre o secvență $S_1=<t_1, t_2, ...,t_n>$ se poate spune ca este conținută de o secvență $S_2=<l_1, l_2, ...,l_m>$ dacă $n \leq m$ și $ \exists i,j$ astfel încât $t_1 = l_i, t_n = l_j$ și $\forall k, i \leq k \leq j \implies t_{k-i} = l_k$. Pentru această incluziune a secvențelor se va utiliza ulterior notația $S_1 \subseteq S_2$.      
+\begin{defi}
+
+Fie $S_{db}$ o colecție de secvențe, iar $T$ multimea tuplelor $(S_{id}, S)$ din $S_{db}$, pentru care $S' \subseteq S$. \textbf{Suportul} secvenței $S'$ în cadrul acestei colecții de secvențe este $\vert T \vert$. Informal, suportul unei secvențe într-o colecție de secvențe este egal cu numarul de secvențe din acea colecție, care conțin secvența respectivă.
+\end{defi}
+
+Pornind de la definiția unei secvențe și a suportului unui secvențe se poate introduce conceptul de \textbf{tipar secvențial frecvent}. Un tipar secvențial frecvent nu este altceva decât o secvență care în cadrul unei colecții de secvențe $S_{db}$ are un suport mai mare sau egal cu un prag minim. Acest prag minin se mai numește și \textbf{suport minim}.
+
+Identificare tiparelor descrise anterior prezintă un interes deosebit, cu aplicabilitate într-o multitudine de domenii, iar după cum va fi ilustrat în capitolele urmatoare, tiparele extrase din cuvinte deja despărțite în silabe pot fi utilizate pentru a construi strategii de predicție a silabisirii cuvintelor. 
+
+\begin{ex}
+Într-un astfel de scenariu în care se dorește identificarea tiparelor frecvente din cuvinte despărțite în silabe, alfabetul colecției de secvențe este reprezentat de mulțimea tuturor posibilelor silabelor, iar fiecare cuvânt reprezintă o secvență. În cadrul tabelului \ref{table:sdb_words} este prezentată o astfel de colecție de secvențe.
+\end{ex}
+
+\begin{table}[h]
+\centering    
+\begin{tabular}{|c|c|}    
+\hline      
+$S_{id}$ & $S$ \\
+\hline
+1 & \textit{<li, be, lu, lă>} \\
+2 & \textit{<e, li, be, ra, tor>} \\
+3 & \textit{<a, ma, tor>}\\
+4 & \textit{<ar, ti, col>} \\
+5 & \textit{<pro, gra, ma, tor>} \\
+6 & \textit{<a, ni, ver, sa, re>} \\
+7 & \textit{<vi, sa, re>} \\
+8 & \textit{<gra, ma, ti, că>} \\
+9 & \textit{<e, va, da, re>} \\
+10 & \textit{<ma, re, e>} \\
+11 & \textit{<pro, gra, ma, re>} \\
+12 & \textit{<gân, di, tor>} \\
+13 & \textit{<e, li, tă>} \\
+14 & \textit{<sa, re>} \\
+15 & \textit{<e, li, cop, ter>} \\
+\hline                              
+\end{tabular}
+\caption{Exemplu de colecție de secvențe construite pe baza unui set de cuvinte despărțite în silabe}
+\label{table:sdb_words}               
+\end{table}
+
+Pentru colecția de secvențe frecvente din cadrul tabelului \ref{table:sdb_words}, în cadrul tabelului \ref{table:sdb_patterns} sunt ilustrate tiparele frecvente în funcție de diferite valori ale suportului minim. Tiparele identificate dintr-un set mare de cuvinte deja silabisite, pe lângă valoarea lor în contextul analizelor de fonetica și morfologie a limbi, pot fi folosite pentru a automatiza procesul de silabisire, asa cum va fi ilustrat în cadrul capitolului următor.
+
+\begin{table}[h!]
+\centering    
+\begin{tabular}{|c|c|c|}    
+\hline      
+Suport minim & Tipar frecvent & Suport\\
+\hline
+2& \textit{<a>} & 2  \\
+ & \textit{<li, be>} & 2  \\
+ & \textit{<pro, gra, ma>} & 2  \\
+ & \textit{<ma, re>} & 2  \\
+ & \textit{<ma, tor>} & 2  \\
+ & \textit{<ti>} & 2  \\
+ & \textit{<e, li>} & 3  \\
+ & \textit{<gra, ma>} & 3  \\
+ & \textit{<sa, re>} & 3  \\
+ & \textit{<tor>} & 4  \\
+ & \textit{<li>} & 4  \\
+ & \textit{<e>} & 5  \\
+ & \textit{<ma>} & 5  \\
+ & \textit{<re>} & 6  \\
+\hline
+3 & \textit{<e, li>} & 3  \\
+ & \textit{<gra, ma>} & 3  \\
+ & \textit{<sa, re>} & 3  \\
+ & \textit{<tor>} & 4  \\
+ & \textit{<li>} & 4  \\
+ & \textit{<e>} & 5  \\
+ & \textit{<ma>} & 5  \\
+ & \textit{<re>} & 6  \\
+\hline
+4 & \textit{<tor>} & 4  \\
+ & \textit{<li>} & 4  \\
+ & \textit{<e>} & 5  \\
+ & \textit{<ma>} & 5  \\
+ & \textit{<re>} & 6  \\
+\hline
+5 & \textit{<e>} & 5  \\
+ & \textit{<ma>} & 5  \\
+ & \textit{<re>} & 6  \\
+\hline
+6 & \textit{<re>} & 6  \\
+\hline                              
+\end{tabular}
+\caption{Exemplu de colecție de secvențe construite pe baza unui set de cuvinte despărțite în silabe}
+\label{table:sdb_patterns}               
+\end{table}
+
+În cadrul sectiunii următoare se va face o scurtă prezentare a unuia dintre algoritmii performanti, cu ajutorul caruia se pot identifica tipare frecvente. 
+
+
+
+
+\section{Algoritmul BIDE}
+
+bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
