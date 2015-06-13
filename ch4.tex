@@ -61,7 +61,7 @@ $S_{id}$ & $S$ \\
 Despre o secvență $S_1=<t_1, t_2, ...,t_n>$ se poate spune ca este conținută de o secvență $S_2=<l_1, l_2, ...,l_m>$ dacă $n \leq m$ și $ \exists i,j$ astfel încât $t_1 = l_i, t_n = l_j$ și $\forall k, i \leq k \leq j \implies t_{k-i} = l_k$. Pentru această incluziune a secvențelor se va utiliza ulterior notația $S_1 \subseteq S_2$.      
 \begin{defi}
 
-Fie $S_{db}$ o colecție de secvențe, iar $T$ multimea tuplelor $(S_{id}, S)$ din $S_{db}$, pentru care $S' \subseteq S$. \textbf{Suportul} secvenței $S'$ în cadrul acestei colecții de secvențe este $\vert T \vert$. Informal, suportul unei secvențe într-o colecție de secvențe este egal cu numarul de secvențe din acea colecție, care conțin secvența respectivă.
+Fie $S_{db}$ o colecție de secvențe, iar $T$ multimea tuplelor $(S_{id}, S)$ din $S_{db}$, pentru care $S' \subseteq S$. \textbf{Suportul} secvenței $S'$ în cadrul acestei colecții de secvențe este $\vert T \vert$.  Informal, suportul unei secvențe într-o colecție de secvențe este egal cu numarul de secvențe din acea colecție, care conțin secvența respectivă. Pentru suportul secvenței $S$ în cadrul $S_{db}$ se va utiliza notația $sup_{S_{db}}(S)$.
 \end{defi}
 
 Pornind de la definiția unei secvențe și a suportului unui secvențe se poate introduce conceptul de \textbf{tipar secvențial frecvent}. Un tipar secvențial frecvent nu este altceva decât o secvență care în cadrul unei colecții de secvențe $S_{db}$ are un suport mai mare sau egal cu un prag minim. Acest prag minin se mai numește și \textbf{suport minim}.
@@ -99,60 +99,64 @@ $S_{id}$ & $S$ \\
 \label{table:sdb_words}               
 \end{table}
 
-Pentru colecția de secvențe frecvente din cadrul tabelului \ref{table:sdb_words}, în cadrul tabelului \ref{table:sdb_patterns} sunt ilustrate tiparele frecvente în funcție de diferite valori ale suportului minim. Tiparele identificate dintr-un set mare de cuvinte deja silabisite, pe lângă valoarea lor în contextul analizelor de fonetica și morfologie a limbi, pot fi folosite pentru a automatiza procesul de silabisire, asa cum va fi ilustrat în cadrul capitolului următor.
+Pentru colecția de secvențe frecvente din cadrul tabelului \ref{table:sdb_words}, în cadrul tabelului \ref{table:sdb_patterns} sunt ilustrate tiparele frecvente în funcție de diferite valori ale suportului minim. Se va nota cu $(S,sup)$ un tipar frecvent, unde $S$ este tiparul propriu-zis iar $sup$ reprezintă valoarea suportului aceste secvente.
+
+Tiparele identificate dintr-un set mare de cuvinte deja silabisite, pe lângă valoarea lor în contextul analizelor de fonetica și morfologie a limbi, pot fi folosite pentru a automatiza procesul de silabisire, asa cum va fi ilustrat în cadrul capitolului următor.
 
 \begin{table}[h!]
 \centering    
-\begin{tabular}{|c|c|c|}    
+\begin{tabular}{|c|l|}    
 \hline      
-Suport minim & Tipar frecvent & Suport\\
+Suport minim & Tipar frecvent\\
 \hline
-2& \textit{<a>} & 2  \\
- & \textit{<li, be>} & 2  \\
- & \textit{<pro, gra, ma>} & 2  \\
- & \textit{<ma, re>} & 2  \\
- & \textit{<ma, tor>} & 2  \\
- & \textit{<ti>} & 2  \\
- & \textit{<e, li>} & 3  \\
- & \textit{<gra, ma>} & 3  \\
- & \textit{<sa, re>} & 3  \\
- & \textit{<tor>} & 4  \\
- & \textit{<li>} & 4  \\
- & \textit{<e>} & 5  \\
- & \textit{<ma>} & 5  \\
- & \textit{<re>} & 6  \\
+2& $(<a>, 2)$  \\
+ & $(<li, be>, 2)$  \\
+ & $(<pro, gra, ma>, 2)$  \\
+ & $(<ma, re>, 2)$  \\
+ & $(<ma, tor>, 2)$  \\
+ & $(<ti>, 2)$  \\
+ & $(<e, li>, 3)$  \\
+ & $(<gra, ma>, 3)$  \\
+ & $(<sa, re>, 3)$  \\
+ & $(<tor>,4)$  \\
+ & $(<li>, 4)$  \\
+ & $(<e>, 5)$  \\
+ & $(<ma>,5)$  \\
+ & $(<re>, 6)$  \\
 \hline
-3 & \textit{<e, li>} & 3  \\
- & \textit{<gra, ma>} & 3  \\
- & \textit{<sa, re>} & 3  \\
- & \textit{<tor>} & 4  \\
- & \textit{<li>} & 4  \\
- & \textit{<e>} & 5  \\
- & \textit{<ma>} & 5  \\
- & \textit{<re>} & 6  \\
+3& $(<e, li>, 3)$  \\
+ & $(<gra, ma>, 3)$  \\
+ & $(<sa, re>, 3)$  \\
+ & $(<tor>,4)$  \\
+ & $(<li>, 4)$  \\
+ & $(<e>, 5)$  \\
+ & $(<ma>,5)$  \\
+ & $(<re>, 6)$  \\
 \hline
-4 & \textit{<tor>} & 4  \\
- & \textit{<li>} & 4  \\
- & \textit{<e>} & 5  \\
- & \textit{<ma>} & 5  \\
- & \textit{<re>} & 6  \\
+4& $(<tor>,4)$  \\
+ & $(<li>, 4)$  \\
+ & $(<e>, 5)$  \\
+ & $(<ma>,5)$  \\
+ & $(<re>, 6)$  \\
 \hline
-5 & \textit{<e>} & 5  \\
- & \textit{<ma>} & 5  \\
- & \textit{<re>} & 6  \\
+5& $(<e>, 5)$  \\
+ & $(<ma>,5)$  \\
+ & $(<re>, 6)$  \\
 \hline
-6 & \textit{<re>} & 6  \\
+ & $(<re>, 6)$  \\
 \hline                              
 \end{tabular}
 \caption{Exemplu de colecție de secvențe construite pe baza unui set de cuvinte despărțite în silabe}
 \label{table:sdb_patterns}               
 \end{table}
 
-În cadrul sectiunii următoare se va face o scurtă prezentare a unuia dintre algoritmii performanti, cu ajutorul caruia se pot identifica tipare frecvente. 
-
-
-
+În cadrul sectiunii următoare se va face o scurtă prezentare a unuia dintre algoritmii performanți, cu ajutorul caruia se pot identifica tipare frecvente. 
 
 \section{Algoritmul BIDE}
+Algoritmul BIDE, prezentat în detaliu în \cite{bib:wang2004bide}, este o soluție capabilă să extragă tipare secventiale frecvente inchise.
 
-bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
+\begin{defi}
+Prin \textbf{tipar secvential închis} se întelege un tipar dintr-un set de tipare pentru care nu exista alt tipar care să-l conțină și să aiba același suport. Formal, $S$ este închis dacă $\forall S' \epsilon S_{db}, \nexists (S \subseteq S' \wedge sup_{S_{db}}(S)=sup_{S_{db}}(S'))$.
+\end{defi}  
+
+TODO... 

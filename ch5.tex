@@ -1,76 +1,117 @@
-\chapter{De la tipare secventiale frecvente la silabizare}
+\chapter{De la tipare secventiale frecvente la silabisire}
 \label{cap:contributii}
 
+În cadrul acestui capitol se prezenta în detaliu o metoda propusă prin care, pornind de tipare secvențiale frecvente, se pot identifica despărțiri în silabe ale cuvintelor.  
+
+\section{Prezentare de ansamblu a soluției}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/rosil-flow.png}
+    \caption{Diagrama conceptuală a soluției propuse}
+    \label{fig:rosil-flow}
+\end{figure}
+
+Principalele etape ale metodei sunt următoarele:
+\begin{enumerate}
+\item Identificarea tiparelor frecvente dintr-un set de cuvinte despărțite în silabe și indexarea acestora.
+\item Identificarea tiparelor care prezintă un grad ridicat de potrivire în cadrul cuvântului care se dorește a fi despărțit în silabe
+\item Clasificarea acestor tipare în funcție poziția în cuvânt pe care au "potrivit-o" (început, sfârșit, interior).
+\item Construirea unui graf cu aceste tipare pe baza potrivirii dintre aceste tipare
+\item Eliminarea nodurilor izolate din acest graf
+\item Pe baza unor strategii de predicție, se va alege o cale sau mai multe în acest graf, reprezentând soluțiile propuse pentru despărțirea în silabe.
+\end{enumerate}
 
 \section{Identificarea tiparelor frecvente}
-\section{Potrivirea tiparelor in vederea silabizarii}
+
+Pentru a construi setul de tipare frecvente a fost folosită colecția de cuvinte despărțite în silabe în limba română RoSyllabiDict, \cite{bib:BARBU08.495}. Acest set de date conține 525486 de cuvinte despărțite în silabe. 
+
+În vederea analizei setului de date, în cadrul tabelului \ref{table:sdb_counts} se poate observa variația numărului de tipare secvențiale frecvente închise în funcție de valoarea de suport minim.   
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+Sup.& Total & Lung. 1 & Lung. 2 & Lung. 3 & Lung. 4 & Lung. 5 & Lung. 6 & Lung. 7\\ 
+\hline
+\hline
+1000 & 648 & 252 & 385 & 11 & 0 & 0 & 0 & 0\\ 
+\hline
+800 & 890 & 293 & 576 & 21 & 0 & 0 & 0 & 0\\ 
+\hline
+600 & 1339 & 380 & 903 & 56 & 0 & 0 & 0 & 0\\ 
+\hline
+400 & 2211 & 523 & 1544 & 143 & 1 & 0 & 0 & 0\\ 
+\hline
+200 & 4812 & 832 & 3384 & 576 & 20 & 0 & 0 & 0\\ 
+\hline
+100 & 10461 & 1234 & 6754 & 2309 & 162 & 2 & 0 & 0\\ 
+\hline
+50 & 22852 & 1824 & 12671 & 7453 & 853 & 47 & 4 & 0\\ 
+\hline
+20 & 62549 & 2597 & 25731 & 28056 & 5384 & 674 & 90 & 17\\ 
+\hline
+10 & 129106 & 3271 & 41126 & 63388 & 17812 & 2940 & 454 & 97\\ 
+\hline
+5 & 256065 & 4146 & 63443 & 123429 & 52271 & 10553 & 1840 & 327\\ 
+\hline
+2 & 633195 & 5469 & 104254 & 248227 & 186623 & 66915 & 16920 & 3882\\ 
+\hline\end{tabular}
+\label{table:sdb_counts}
+\caption{Numărul de tipare secvențiale frecvente închise pentru setul de date RoSyllabiDict} 
+\end{table}
+
+Alegerea unui suport minim cat mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei dar pe de altă parte performanța este influențată de cantitiatea de tipare. 
+
+Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente, pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate ale continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
+
+\begin{table}[h!]
+\centering    
+\begin{tabular}{|l|l|}    
+\hline      
+Cheie & Valoare\\
+\hline
+$a$ 		& $(<a>, 2)$  \\
+$libe$ 		& $(<li, be>, 2)$  \\
+$programa$ 	& $(<pro, gra, ma>, 2)$  \\
+$mare$ 		& $(<ma, re>, 2)$  \\
+$mator$ 	& $(<ma, tor>, 2)$  \\
+$ti$ 		& $(<ti>, 2)$  \\
+$eli$ 		& $(<e, li>, 3)$  \\
+$grama$ 	& $(<gra, ma>, 3)$  \\
+$sare$ 		& $(<sa, re>, 3)$  \\
+$tor$ 		& $(<tor>, 4)$  \\
+$li$ 		& $(<li>, 4)$  \\
+$e$ 		& $(<e>, 5)$  \\
+$ma$ 		& $(<ma>, 5)$  \\
+$re$ 		& $(<re>, 6)$  \\
+\hline
+\end{tabular}
+\caption{Exemplu de indexare pentru tipare secvențiale frecvente}
+\label{table:sdb_index}               
+\end{table}  
+
+Odată având colecția de tipare frecvente indexată, procesul de silabizarea poate fi initial. 
+ 
+\section{Potrivirea tiparelor in vederea silabisirii}
+
+Fie $W$ un cuvânt compus dintr-o secvență de litere, iar $Z_W$ mulțimea tuturor subsecventelor continue ale acestui cuvânt.
+
+\begin{ex}
+Pentru cuvântul $amator$, $Z_{amator} =$\{\textit{a, m, t, o, r, am, ma, at, to, or, ama, mat, ato, tor, amat, mato, ator, amato, mator, amator}\}.
+\end{ex}
+
+\begin{defi} Prin \textbf{potrivirea tiparelor} pentru cuvântul $W$, având multimea $Z_W$ asociată, se dorește identificarea tuturor tiparelor frecvente care sunt indexate cu chei care aparțin multimii $Z_W$. Se noteaza rezultatul acestui proces cu $P_W$
+\end{defi}
+
+\begin{ex}
+Considerând același cuvânt $amator$, $P_{amator} =$\{(<a>, 2), (<ma>, 5), (<tor>,4), (<ma, tor>, 2)\}.
+\end{ex}
 \section{Grafuri de tipare}
 \section{Strategii de predictie a desparii in silabe} 
 
-Titlul acestui capitol nu este unul impus și nici nu corespunde neapărat unui singur capitol. Titlul indică mai degrabă o parte (importantă și centrală, de altfel) a lucrării, în care se prezintă ceea ce s-a realizat efectiv: contribuțiile autorului. Organizarea acestei părți este dependentă și specifică fiecărei lucrări în parte și este stabilită de către fiecare autor după cum i se pare mai potrivit pentru tema lui. Ea poate cuprinde prezentarea unor concepte teoretice (unelte sau tehnici matematice folosite în lucrare, prezentarea sau introducerea unor concepte teoretice etc.), o analiză a diferitelor metode/algoritmi/tehnologii etc. luate în considerare sau dezvoltate de către autor, o prezentare a unui design (mai mult sau mai puțin detaliat) sau chiar detalii a unei eventuale implementări/prototip, dacă e cazul.
 
-Trebuie remarcat însă faptul că această parte reprezintă contribuția personală a autorului, chiar dacă ea constă de exemplu doar dintr-o analiză comparativă a unor metode/algoritmi, și în nici un caz ea nu poate fi sinteza unor texte preluate din alte surse. Prin urmare, orice informații sunt prezentate aici, ele trebuie să corespundă cel puțin unei interpretări/analize critice personale a autorului, dacă nu chiar unor idei originale ale acestuia. 
-
-\subsection{Dimensiune}
-
-Împreună cu capitolul (partea) următor reprezintă cca. 70\% din lucrare. 
-
-
-\section{Examples: lists, figures, tables, equations}
-
-Așa arată o listă de elemente nenumerotate:
-\begin{itemize}
-  \item element 1
-  \item element 2
-  \item \dots
-\end{itemize}
-
-
-Așa arată o listă de elemente numerotare:
-\begin{itemize}
-  \item element 1
-  \item element 2
-  \item \dots
-\end{itemize}
-
-
-Așa arată o listă în text: 
-\begin{inparaenum}[(\itshape 1 \upshape)]
-  \item element 1, 
-  \item element 2, 
-  \item \dots
-\end{inparaenum}
-
-\textbf{Atenție}: orice tabel, figura sau ecuație (formulă) trebuie referite \textit{explicit} în text explicit (de genul: în Figura X este ulustrat \dots, în Tabelul Y se poate vedea \dots), pentru că Latex le poate plasa chiar și pe altă pagină decât acolo unde vrem noi să ne referim la ele. Vedeți exemple de mai jos!
-
-Tabelul~\ref{table:example} ilustrează un exemplu de tabel. Un editor on-line de tabele poate fi găsit la \url{http://www.tablesgenerator.com/}. 
-
-\begin{table}[t]
-\centering                          % tabel centrat 
-\begin{tabular}{|c|c|c|c|}          % 4 coloane centrate 
-\hline\hline                        % linie orizontala dubla
-Case & Method\#1 & Method\#2 & Method\#3 \\ [0.5ex]   % inserare tabel
-%heading
-\hline                              % linie orizontal simpla
-1 & 50 & 837 & 970 \\               % corpul tabelului 
-2 & 47 & 877 & 230 \\
-3 & 31 & 25 & 415 \\[1ex]           % [1ex] adds vertical space
-\hline                              
-\end{tabular}
-\caption{Nonlinear Model Results}   % titlul tabelului
-\label{table:example}                % \label{table:nonlin} introduce eticheta folosita pentru referirea tabelului in text; referirea in text se va face cu \ref{table:nonlin}
-\end{table}
-
-În Figura~\ref{fig:exemplu} 
-
-
-Formula~(\ref{eq:example}) arată modul de calcul al lui $\Delta$:
-\begin{equation} \label{eq:example}
-    \Delta =\sum_{i=1}^N w_i (x_i - \bar{x})^2 .
-\end{equation}
-
-
-Algoritmul~\ref{alg:example} este un exemplu de descriere pseudo-cod a unui algoritm, preluat de la \href{http://en.wikibooks.org/wiki/LaTeX/Algorithms#Typesetting_using_the_algorithm2e_package}{http://en.wikibooks.org/wiki/LaTeX}. El utilizează pachetul \textit{algorithm2e}. Alternativ, puteți utiliza pachetele \textit{algorithmic} sau \textit{program}. 
+In cadrul algoritmul ~\ref{alg:example} este un exemplu de descriere pseudo-cod a unui algoritm, preluat de la \href{http://en.wikibooks.org/wiki/LaTeX/Algorithms#Typesetting_using_the_algorithm2e_package}{http://en.wikibooks.org/wiki/LaTeX}. El utilizează pachetul \textit{algorithm2e}. Alternativ, puteți utiliza pachetele \textit{algorithmic} sau \textit{program}. 
 
 \begin{algorithm}
  \KwData{this text}
