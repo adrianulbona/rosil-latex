@@ -1,0 +1,12 @@
+*.ps 
+*.dvi 
+*.log 
+*.toc 
+*.lot 
+*.lof 
+*.aux  
+*.blg 
+*.log 
+*.backup
+*.bbl
+*.pdf
