@@ -1,7 +1,7 @@
 \chapter{De la tipare secventiale frecvente la silabisire}
 \label{cap:contributii}
 
-În cadrul acestui capitol se prezenta în detaliu o metoda propusă prin care, pornind de tipare secvențiale frecvente, se pot identifica despărțiri în silabe ale cuvintelor.  
+În cadrul acestui capitol se prezenta în detaliu metoda propusă, prin care, pornind de tipare secvențiale frecvente, se pot identifica despărțiri în silabe ale cuvintelor.  
 
 \section{Prezentare de ansamblu a soluției}
 
@@ -63,7 +63,7 @@ Sup.& Total & Lung. 1 & Lung. 2 & Lung. 3 & Lung. 4 & Lung. 5 & Lung. 6 & Lung. 
 
 Alegerea unui suport minim cat mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei dar pe de altă parte performanța este influențată de cantitiatea de tipare. 
 
-Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente, pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate ale continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
+Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente, pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
 
 \begin{table}[h!]
 \centering    
@@ -95,37 +95,70 @@ Odată având colecția de tipare frecvente indexată, procesul de silabizarea p
  
 \section{Potrivirea tiparelor in vederea silabisirii}
 
-Fie $W$ un cuvânt compus dintr-o secvență de litere, iar $Z_W$ mulțimea tuturor subsecventelor continue ale acestui cuvânt.
+Fie $W$ un cuvânt compus dintr-o secvență de litere, iar $Z_W$ mulțimea tuturor subsecventelor continue ale acestui cuvânt, precum si îndexii de inceput și sfârșit ai acestora.
 
 \begin{ex}
-Pentru cuvântul $amator$, $Z_{amator} =$\{\textit{a, m, t, o, r, am, ma, at, to, or, ama, mat, ato, tor, amat, mato, ator, amato, mator, amator}\}.
+Pentru cuvântul $amator$, tuplele din multimea sunt $Z_{amator}$ sunt ilustrate în cadrul tabelului \ref{table:sdb_substrings}. 
 \end{ex}
 
-\begin{defi} Prin \textbf{potrivirea tiparelor} pentru cuvântul $W$, având multimea $Z_W$ asociată, se dorește identificarea tuturor tiparelor frecvente care sunt indexate cu chei care aparțin multimii $Z_W$. Se noteaza rezultatul acestui proces cu $P_W$
+
+\begin{table}[b!]
+\centering    
+\begin{tabular}{|l|l|}    
+\hline      
+Secventă & Indexi\\
+\hline
+$a$ 		& $\left[0,1\right), \left[2,3\right)$  \\
+$m$ 		& $\left[1,2\right)$  \\
+... 		& ...  \\
+$amator$ 	& $\left[0,6\right)$  \\
+
+\hline
+\end{tabular}
+\caption{Mulțimea $Z_{amator}$}
+\label{table:sdb_substrings}               
+\end{table}  
+
+\begin{defi} Prin \textbf{potrivirea tiparelor} pentru cuvântul $W$, având multimea $Z_W$ asociată, se dorește identificarea tuturor tiparelor frecvente care sunt indexate cu chei care aparțin multimii $Z_W$. Notăm rezultatul acestei operații cu $M_W$. Considerând același cuvânt $amator$, $M_{amator}$ este ilustrată în tabelul \ref{table:sdb_pattern_match}
 \end{defi}
 
-\begin{ex}
-Considerând același cuvânt $amator$, $P_{amator} =$\{(<a>, 2), (<ma>, 5), (<tor>,4), (<ma, tor>, 2)\}.
-\end{ex}
+\begin{table}[h!]
+\centering    
+\begin{tabular}{|l|l|}    
+\hline      
+Tipar frecvent & Indexi potrivire\\
+\hline
+$(<a>, 2)$			& $\left[0,1\right), \left[2,3\right)$   \\
+$(<ma>, 5)$  		& $\left[2,4\right)$\\
+$(<ma, tor>, 2)$ 	& $\left[2,6\right)$ \\
+$(<tor>, 4)$  		& $\left[4,6\right)$\\
+\hline
+\end{tabular}
+\caption{Exemplu de indexare pentru tipare secvențiale frecvente}
+\label{table:sdb_pattern_match}               
+\end{table}  
+
+Pentru ca ulterior sa se poată identifica posibile despărțiri în silabe este necesară clasificarea tiparelor frecvente potrivite. Astfel, există patru tipuri de tipare:  
+
+\begin{itemize}
+\item tipare de început: ($<a>$,2),
+\item tipare intermediare: ($<ma>$,5), ($<a>$,2).
+\item tipare de sfarșit: ($<ma, tor>$,2), ($<tor>$,4).  
+\item tipare complete (acele tipare frecvente care inglobeaza întreg cuvântul de despărțit).
+\end{itemize}
+
+Odată identificate aceste tipare frecvente se pune problema organizării acestora în vederea reconstrucției cuvântului din tipare frecvente. Aceste reconstrucții reprezintă posibile despătiri în silabe. 
+
+Pentru această reconstrucție s-a ales ca structură de date un graf orientat, după cum va fi descris în secțiunea următoare.
+
 \section{Grafuri de tipare}
+
+Odată identificate, tiparele frecvente, trebuie remarcată legătura că în majoritatea cazurilor, există legături între acestea. Prin legături între tipare se întelege ca fie unele se termină în vecinătatea unei litere dintr-un cuvânt, iar altele încep în acea poziție, sau chiar mai mult decat atat, există tipare între care există suprapuneri. 
+
+Pornind de la obervațiile aceastea, în cele ce urmează, va fi arătat că pe baza acestor relatii dintre tiparele frecvente ale unui cuvânt, se vor putea construi lanțuri de tipare secvențiale frecvente, care să reprezinte silibisiri ale cuvântului respectiv.
+
+
+
 \section{Strategii de predictie a desparii in silabe} 
 
-
-In cadrul algoritmul ~\ref{alg:example} este un exemplu de descriere pseudo-cod a unui algoritm, preluat de la \href{http://en.wikibooks.org/wiki/LaTeX/Algorithms#Typesetting_using_the_algorithm2e_package}{http://en.wikibooks.org/wiki/LaTeX}. El utilizează pachetul \textit{algorithm2e}. Alternativ, puteți utiliza pachetele \textit{algorithmic} sau \textit{program}. 
-
-\begin{algorithm}
- \KwData{this text}
- \KwResult{how to write algorithm with \LaTeX2e }
- initialization\;
- \While{not at end of this document}{
-  read current\;
-  \eIf{understand}{
-   go to next section\;
-   current section becomes this one\;
-   }{
-   go back to the beginning of current section\;
-  }
- }
- \caption{How to write algorithms}
- \label{alg:example}
-\end{algorithm}
+\section{Metrici de evaluare}

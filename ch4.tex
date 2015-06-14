@@ -48,10 +48,10 @@ Un exemplu de astfel colecție de secvențe este prezentat în cadrul tabelului 
 \hline      
 $S_{id}$ & $S$ \\
 \hline                    
-1 & $<a,b,c,b,a>$ \\
-2 & $<a,a,a,b,c>$ \\
-3 & $<b,b,b,b,a>$ \\
-4 & $<c,b,b,a>$ \\
+1 & $<C,A,A,B,C>$ \\
+2 & $<A,B,C,B>$ \\
+3 & $<C,A,B,C>$ \\
+4 & $<A,B,B,C,A>$ \\
 \hline                              
 \end{tabular}
 \caption{Exemplu de colecție de secvențe}
@@ -159,4 +159,58 @@ Algoritmul BIDE, prezentat în detaliu în \cite{bib:wang2004bide}, este o solu�
 Prin \textbf{tipar secvential închis} se întelege un tipar dintr-un set de tipare pentru care nu exista alt tipar care să-l conțină și să aiba același suport. Formal, $S$ este închis dacă $\forall S' \epsilon S_{db}, \nexists (S \subseteq S' \wedge sup_{S_{db}}(S)=sup_{S_{db}}(S'))$.
 \end{defi}  
 
-TODO... 
+\begin{defi}
+Prin proiecția unei sevențe $S$ într-o colecție de secvente $S_{db}$ se întelege multimea tuturor acelor subsecvente cu care $S$ \textit{se continuă} secvența $S$. De exemplu, în cadrul colecției de secvențe din cadrul \ref{table:sdb}, proiectia secventei $<A,B>$ este {$<C>,<C, B>,<C>,<B, C, A>$}. Pseudo-proiecția secvenței $S$ reprezintă setul indexi ai extensiilor. 
+\end{defi}  
+
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwFunction{fse}{frequentSequenceEnumeration}
+\SetKwFunction{fs}{frequentSequences}
+\fse($S_{db}, sup_{min}, FS$) \\
+\KwData{$S_{db}$ o colecție de secvențe, pragul minim de suport $sup_{min}$}
+\KwResult{setul complet de tipare secvențiale frecvente FS} 
+$FS = \emptyset$ \\
+call \fs($S_{db}, \emptyset, sup_{min}, FS$) \\
+\KwRet $FS$ \\
+
+\BlankLine
+\BlankLine
+
+\SetKwFunction{fs}{frequentSequences}
+\fs($S_pS_{db}, S_p, sup_{min}, FS$) \\
+\KwData{$S_pS_{db}$ o pseudo proiectie a secvenței $S_p$ în colecția de secvențe $S_{db}$, pragul minim de suport $sup_{min}$}
+\KwResult{setul de tipare secvențiale frecvente FS} 
+
+\If{$S_p \neq \emptyset$}{
+	$FS = FS \cup S_p$
+}
+
+$LF\_S_p =$ elementele frecvente cu care poate fi extinsă $S_p$
+
+\If{$LF\_S_p = \emptyset$} {
+\KwRet
+}
+
+\For{ $i$ in $LF\_S_p$}{
+	$S_p^i = <S_p, i>$ \\
+	$S_p^iS_{db}$ = pseudo proiecția secvenței $S_p^i$ în cadrul $S_pS_{db}$ \\
+	call \fs($S_p^iS_{db}, S_p^i, sup_{min}, FS$)
+}
+\caption{Descoperirea tiparelor secvențiale frecvente}
+\label{algo:fse}
+\end{algorithm}
+
+În cadrul algoritmului \ref{algo:fse} este prezentată idea din spatele algoritmului BIDE. Pe scurt, acesta porneste de la un set de tipare de lungime mică, pe care încearcă recursis să le "crească" atât timp cat suportul lor rămâne peste pragul minim. Varianta prezentată este mult simplificată, algoritmul BIDE complet identifica doar secvențe frecvente și adaugă o serie de tehnici de optimizare, cum ar fi eliminarea rapida a tiparelor care nu mai pot fi "crescute", eficientă la nivelul utilizarii de memorie dar performanțe bune ca timp de execuție.
+
+\begin{ex}
+Pentru tabelul \ref{table:sdb}, la o trasare a algoritmului \ref{algo:fse} identificarea tiparelor frecvente este ilustrată de figura \ref{fig:bide-algo} (exemplu preluat din \cite{bib:wang2004bide}). În prima fază sunt identificate elementele de lumgime 1 ($<A>,<B>,<C>$) si le este calculat suportul. Presupunând că suportul minim este 2, pentru fiecare dintre aceste tipare de lungime 1, se caută extensii în colecția de secvențe. În figura la nivelul 2 sunt prezentate aceste tipare iar alaturi, suportul asociat. Algoritmul avanseaza recursiv pentru fiecare tipar astfel identificat. Nodurile marcate cu linie continuă reprezintă tiparele frecvente închise. 
+\end{ex}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/bide-tree.png}
+    \caption{Arborele de constructie a tiparelor frecvente}
+    \label{fig:bide-algo}
+\end{figure}
