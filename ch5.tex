@@ -19,14 +19,14 @@ Principalele etape ale metodei sunt următoarele:
 \item Clasificarea acestor tipare în funcție poziția în cuvânt pe care au "potrivit-o" (început, sfârșit, interior).
 \item Construirea unui graf cu aceste tipare pe baza potrivirii dintre aceste tipare
 \item Eliminarea nodurilor izolate din acest graf
-\item Pe baza unor strategii de predicție, se va alege o cale sau mai multe în acest graf, reprezentând soluțiile propuse pentru despărțirea în silabe.
+\item Pe baza unor strategii de predicție, se va alege o cale sau mai multe în acest graf, reprezentând soluția propusă sau soluțiile soluțiile propuse pentru despărțirea în silabe.
 \end{enumerate}
 
 \section{Identificarea tiparelor frecvente}
 
 Pentru a construi setul de tipare frecvente a fost folosită colecția de cuvinte despărțite în silabe în limba română RoSyllabiDict, \cite{bib:BARBU08.495}. Acest set de date conține 525486 de cuvinte despărțite în silabe. 
 
-În vederea analizei setului de date, în cadrul tabelului \ref{table:sdb_counts} se poate observa variația numărului de tipare secvențiale frecvente închise în funcție de valoarea de suport minim.   
+În vederea analizei setului de date, în cadrul tabelului \ref{table:sdb_counts} se poate observa variația numărului de tipare secvențiale frecvente închise în funcție de valoarea suportului minim.   
 
 \begin{table}[h!]
 \centering
@@ -58,12 +58,12 @@ Sup.& Total & Lung. 1 & Lung. 2 & Lung. 3 & Lung. 4 & Lung. 5 & Lung. 6 & Lung. 
 2 & 633195 & 5469 & 104254 & 248227 & 186623 & 66915 & 16920 & 3882\\ 
 \hline\end{tabular}
 \label{table:sdb_counts}
-\caption{Numărul de tipare secvențiale frecvente închise pentru setul de date RoSyllabiDict} 
+\caption{Numărul de tipare frecvente închise pentru setul de date RoSyllabiDict} 
 \end{table}
 
-Alegerea unui suport minim cat mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei dar pe de altă parte performanța este influențată de cantitiatea de tipare. 
+Alegerea unui suport minim cat mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei, dar pe de altă parte va avea o influentă negativă asupra timpului de execuție. 
 
-Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente, pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
+Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente. Pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
 
 \begin{table}[h!]
 \centering    
@@ -95,14 +95,14 @@ Odată având colecția de tipare frecvente indexată, procesul de silabizarea p
  
 \section{Potrivirea tiparelor in vederea silabisirii}
 
-Fie $W$ un cuvânt compus dintr-o secvență de litere, iar $Z_W$ mulțimea tuturor subsecventelor continue ale acestui cuvânt, precum si îndexii de inceput și sfârșit ai acestora.
+Fie $w$ un cuvânt compus dintr-o secvență de litere, iar $Z_w$ mulțimea tuturor subsecventelor continue ale acestui cuvânt, precum si îndexii de inceput și sfârșit ai acestora.
 
 \begin{ex}
 Pentru cuvântul $amator$, tuplele din multimea sunt $Z_{amator}$ sunt ilustrate în cadrul tabelului \ref{table:sdb_substrings}. 
 \end{ex}
 
 
-\begin{table}[b!]
+\begin{table}[h!]
 \centering    
 \begin{tabular}{|l|l|}    
 \hline      
@@ -119,7 +119,7 @@ $amator$ 	& $\left[0,6\right)$  \\
 \label{table:sdb_substrings}               
 \end{table}  
 
-\begin{defi} Prin \textbf{potrivirea tiparelor} pentru cuvântul $W$, având multimea $Z_W$ asociată, se dorește identificarea tuturor tiparelor frecvente care sunt indexate cu chei care aparțin multimii $Z_W$. Notăm rezultatul acestei operații cu $M_W$. Considerând același cuvânt $amator$, $M_{amator}$ este ilustrată în tabelul \ref{table:sdb_pattern_match}
+\begin{defi} Prin \textbf{potrivirea tiparelor} pentru cuvântul $w$, având multimea $Z_w$ asociată, se dorește identificarea tuturor tiparelor frecvente care sunt indexate cu chei care aparțin multimii $Z_w$. Notăm rezultatul acestei operații cu $M_w$. Considerând același cuvânt $amator$, $M_{amator}$ este ilustrată în tabelul \ref{table:sdb_pattern_match}
 \end{defi}
 
 \begin{table}[h!]
@@ -141,25 +141,25 @@ $(<tor>, 4)$  		& $\left[4,6\right)$\\
 Pentru ca ulterior sa se poată identifica posibile despărțiri în silabe este necesară clasificarea tiparelor frecvente potrivite. Astfel, există patru tipuri de tipare:  
 
 \begin{itemize}
-\item tipare de început: ($<a>$,2),
-\item tipare intermediare: ($<ma>$,5), ($<a>$,2).
-\item tipare de sfarșit: ($<ma, tor>$,2), ($<tor>$,4).  
-\item tipare complete (acele tipare frecvente care inglobeaza întreg cuvântul de despărțit).
+\item tipare de \textbf{început}: ($<a>$,2),
+\item tipare \textbf{intermediare}: ($<ma>$,5), ($<a>$,2).
+\item tipare de \textbf{sfârșit}: ($<ma, tor>$,2), ($<tor>$,4).  
+\item tipare \textbf{complete} (acele tipare frecvente care inglobeaza întreg cuvântul de despărțit).
 \end{itemize}
 
-Odată identificate aceste tipare frecvente se pune problema organizării acestora în vederea reconstrucției cuvântului din tipare frecvente. Aceste reconstrucții reprezintă posibile despătiri în silabe. 
+Odată identificate aceste tipare frecvente se pune problema organizării acestora în vederea reconstrucției cuvântului din tipare frecvente. Aceste reconstrucții pot reprezinta posibile despătiri corecte în silabe. 
 
 Pentru această reconstrucție s-a ales ca structură de date un graf orientat, după cum va fi descris în secțiunea următoare.
 
 \section{Grafuri de tipare}
 
-Odată identificate, tiparele frecvente, trebuie remarcată legătura că în majoritatea cazurilor, există legături între acestea. Prin legături între tipare se întelege ca fie unele se termină în vecinătatea unei litere dintr-un cuvânt, iar altele încep în acea poziție, sau chiar mai mult decat atat, există tipare între care există suprapuneri. 
+În cazul tiparelor frecvente, trebuie remarcat faptul că, în majoritatea cazurilor, există legături între acestea. Prin legături între tipare se înțelege ca fie unele se termină în vecinătatea unei litere dintr-un cuvânt, iar altele încep în acea poziție, sau chiar mai mult decat atat, există tipare între care există suprapuneri. 
 
-Pornind de la obervațiile aceastea, în cele ce urmează, va fi arătat că pe baza acestor relatii dintre tiparele frecvente ale unui cuvânt, se vor putea construi lanțuri de tipare secvențiale frecvente, care să reprezinte silibisiri ale cuvântului respectiv.
+Pornind de la aceste obervații, în cele ce urmează, va fi arătat că pe baza acestor relatii dintre tiparele frecvente ale unui cuvânt, se vor putea construi \textbf{lanțuri de tipare secvențiale frecvente}, care să reprezinte silibisiri ale cuvântului respectiv.
 
 \subsection{Construcția grafului de tipare secvențiale frecvente}
 \begin{defi}
-Fie $P_1$ și $P_2$ doua tipare de forma  $\langle S_1,sup_{S_1}, \left[i_{S_1},j_{S_1}\right) \rangle$, $\langle S_2,sup_{S_2}, \left[i_{S_2},j_{S_2}\right)\rangle $, potrivite în cadrul cuvântului $W$. $P_1 \curvearrowright P_2$ ($P_1$ este extins de $P_2$) dacă $i_{S_1} \epsilon \left[0, i_{S_2}\right)$ și $j_{S_1}\epsilon $ \textit{mulțimii indexilor de despărțire ai tiparului} $S_2$. 
+Fie $p_1$ și $p_2$ doua tipare de forma  $\langle s_1,sup_{s_1}, \left[i_{s_1},j_{s_1}\right) \rangle$, $\langle s_2,sup_{s_2}, \left[i_{s_2},j_{s_2}\right)\rangle $, potrivite în cadrul cuvântului $w$. $p_1 \curvearrowright p_2$ ($p_1$ este extins de $p_2$) dacă $i_{s_1} \epsilon \left[0, i_{s_2}\right)$ și $j_{s_1}\in $ \textit{mulțimii indexilor de despărțire ai tiparului} $s_2$. 
 \end{defi}
 
 \begin{ex}
@@ -170,7 +170,7 @@ Pentru cuvântul \textit{amator}, cu multimea tiparelor potrivite $M_{amator}$ d
 \centering    
 \begin{tabular}{|l|l|}    
 \hline      
-$P_1$ & $P_2$\\
+$p_1$ & $p_2$\\
 \hline
 $\langle<a>, 2, \left[0,1\right)\rangle$ & $\langle<ma>, 5, \left[1,3\right)\rangle$  \\
 $\langle<a>, 2, \left[0,1\right)\rangle$ & $\langle<ma,tor>, 2, \left[1,6\right)\rangle$  \\
@@ -178,12 +178,16 @@ $\langle<ma>, 5, \left[1,3\right)\rangle$ & $\langle<tor>, 4, \left[3,6\right)\r
 $\langle<a>, 2, \left[2,3\right)\rangle$ & $\langle<tor>, 4, \left[3,6\right)\rangle$  \\
 \hline
 \end{tabular}
-\caption{Extiderile $P_1 \curvearrowright P_2$ pentru $M_{amator}$}
+\caption{Extiderile $p_1 \curvearrowright p_2$ pentru $M_{amator}$}
 \label{table:sdb_pattern_extensions}               
 \end{table}  
 
 \begin{defi}
-Fie $P_W$ o multime de tipare secvențiale frecvente ale cuvântului $W$, iar $E_W$ este $\{\langle P_i, P_j \rangle \vert P_i,P_j \epsilon P_W \wedge P_i \curvearrowright P_j\}$ (mulțimea perechilor de extensii pentru tiparele secventiale frecvente). Un graf de tipare frecvente pentru cuvântul $W$, este $G_W = \langle P_W, E_W \rangle$, unde $P_W$ este mulținea nodurilor, iar $E_W$ mulțimea muchiilor. 
+Fie $P_w$ o multime de tipare secvențiale frecvente ale cuvântului $w$ și mulțimea perechilor de extensii pentru tiparele secventiale frecvente: 
+\begin{equation}
+E_w = \{\langle p_i, p_j \rangle \vert p_i,p_j \in P_w \wedge p_i \curvearrowright p_j\}
+\end{equation}
+Un \textbf{graf de tipare frecvente} pentru cuvântul $w$, este $G_w = \langle P_w, E_w \rangle$, unde $P_w$ este mulținea nodurilor, iar $E_w$ mulțimea muchiilor. 
 \end{defi}
 
 \begin{ex}
@@ -199,9 +203,15 @@ Fie $P_W$ o multime de tipare secvențiale frecvente ale cuvântului $W$, iar $E
 
 \subsection{Interpretarea grafului de tipare frecvente}
 
-Odată construit graful de tipare frecvente, se pune întrebarea dacă pe baza acestuia, se poate dezvolta o metodă de silabisire? În graful prezentat în figura \ref{fig:rosil-amator} se pot observa trei dintre cele patru tipuri de tipare (de început, de sfârsit, întermediare), stiind aceasta, se ridică întrebarea dacă caile dintre noduri de început și sfârșit reprezintă posibile despărțiri în silabe, iar dacă, care dintre acestea este despărțirea corectă?
+Odată construit graful de tipare frecvente, se pune întrebarea dacă pe baza acestuia, se poate dezvolta o metodă de silabisire? 
 
-În cazul exemplu prezentat există doua căi între noduri de început si sfârsit, acestea fiind $<a>, <ma, tor>$, respectiv $<a>, <ma>, <tor>$. Din ambele variante se ajunge la despărțirea în silabe $a-ma-tor$, care este si varianta corectă. Pornind de la această observație, în cele ce urmează vor fi prezentate o serie de strategii de selecție a căilor dintr-un graf de tipare frecvente care au probabilitate ridicată sa fie despărțiri în silabe corecte. Dar până se ajungă la aceste strategii trebuie menționat că în realitate, numărul de tipare frecvente potrivite cu un cuvânt este mult mai mare decât în exemplu demonstrativ din figura \ref{fig:rosil-amator}, iar cum căutarea tuturor căilor între două noduri este o problemă dificilă, a carei soluție depinde de complexitatea grafului analizat, este necesar o reducere a dimensiunii grafului pentru a reduce complexitatea cautării. 
+În graful prezentat în figura \ref{fig:rosil-amator} se pot observa trei dintre cele patru tipuri de tipare (de început, de sfârsit, întermediare), stiind aceasta, se ridică întrebarea dacă caile dintre noduri de început și sfârșit reprezintă posibile despărțiri în silabe, iar dacă, care dintre acestea este despărțirea corectă?
+
+În cazul exemplu prezentat există doua căi între noduri de început si sfârsit, acestea fiind $<a>, <ma, tor>$, respectiv $<a>, <ma>, <tor>$. Din ambele variante se ajunge la despărțirea în silabe $a-ma-tor$, care este si varianta corectă. 
+
+Pornind de la această observație, în cele ce urmează vor fi prezentate o serie de strategii de selecție a căilor dintr-un graf de tipare frecvente care au probabilitate ridicată sa fie despărțiri în silabe corecte. 
+
+Dar până se ajungă la aceste strategii trebuie menționat că în realitate, numărul de tipare frecvente potrivite cu un cuvânt este mult mai mare decât în exemplu demonstrativ din figura \ref{fig:rosil-amator}, iar cum căutarea tuturor căilor între două noduri este o problemă dificilă, a carei soluție depinde de complexitatea grafului analizat, este recomandată o reducere a dimensiunii grafului pentru a reduce complexitatea cautării. 
 
 \subsection{Optimizarea grafului de tipare frecvente}
 
@@ -230,18 +240,19 @@ Acesta are două etape:
 \item O primă etapă în cadrul căreia sunt identificate nodurile care nu sunt noduri de sfârșit și nu există nicio muchie care să pornească de la acestea, respectiv nodurile care nu sunt noduri de început și pentru care nu există nicio muchie care să ajungă la ele.
 \item Odată identificate aceste noduri, trebuie identificate și muchile care le au ca sursă sau destinație.
 \end{itemize}
-După aceste două etape, rezultă un graf posibil de dimensiune mai mică, daca acesta este cazul, cele două etape se aplică recursiv pe acesta până când în cadrul primei etape nu mai este identificat niciun nod. 
+
+Eliminând nodurile izolate după aceste două etape, rezultă un graf de dimensiune mai mică. Cele două etape se aplică recursiv până când în cadrul primei etape nu mai este identificat niciun nod izolat. 
 
 \begin{algorithm}[h!]
 \SetAlgoLined
 \SetKwFunction{ppg}{prunePatternGraph}
 
-\ppg($G_{W}$) \\
-\KwData{$G_{W}$ un graf de tipare descris prin $\langle V_W, E_W \rangle$}
-\KwResult{$G_W'$ un graf fără noduri izolate} 
+\ppg($G_{w}$) \\
+\KwData{$G_{w}$ un graf de tipare descris prin $\langle V_w, E_w \rangle$}
+\KwResult{$G_w'$ un graf fără noduri izolate} 
 
 $isolatedVertices = \emptyset$ \\
-\For{ $v$ \textbf{in} $V_W$}{
+\For{ $v$ \textbf{in} $V_w$}{
 	\If{$deg^-(v) == 0 \wedge isNotStartNode(v)$} {
 		$isolatedVertices = isolatedVertices \cup \{v\}$
 	}
@@ -251,55 +262,57 @@ $isolatedVertices = \emptyset$ \\
 }
 
 \If{$isolatedVertices == \emptyset$} {
-	\KwRet $\langle V_W, E_W \rangle$
+	\KwRet $\langle V_w, E_w \rangle$
 }
 
 
 $edgesToBeRemoved = \emptyset$ \\
-\For{ $e$ \textbf{in} $E_W$}{
+\For{ $e$ \textbf{in} $E_w$}{
 	\If{$e$ \textbf{depends on a vertex from} $isolatedVertices$} {
 		$edgesToBeRemoved = edgesToBeRemoved \cup \{e\}$
 	}
 }
 
-$V_W' = V_W \setminus isolatedVertices$\\
-$E_W' = E_W \setminus edgesToBeRemoved$\\
+$V_w' = V_w \setminus isolatedVertices$\\
+$E_w' = E_w \setminus edgesToBeRemoved$\\
 
-\KwRet \ppg($\langle V_W', E_W'  \rangle$) \\
+\KwRet \ppg($\langle V_w', E_w'  \rangle$) \\
 \vspace{.1cm}
 
 \caption{Eliminarea nodurilor izolate din cadrul unui graf de tipare}
 \label{algo:prunning}
 \end{algorithm}
 
-\section{Strategii de predictie a despărțirilor în silabe}
+\section{Lanțuri închise de tipare secvențiale frecvente}
 
-Odată definit un graf de tipare, se pot elabora o serie de strategii prin care se stabilește care dintre căile de dintre nodurile de început și sfârșit reprezintă despărțirea corectă în silabe a cuvântului pe baza căruia a fost construit graful de tipare. 
+Pornind de la un graf de tipare, se pot elabora o serie de strategii prin care se stabilește care dintre căile de dintre nodurile de început și sfârșit reprezintă despărțirea corectă în silabe a cuvântului pe baza căruia a fost construit graful de tipare. 
+
+Dar înainte de  a prezenta aceste strategii, este necesară o scurtă analiză a acestor căi.
 \subsection{Identificarea căilor care pot reprezenta despărțiri în silabe}
 
-Pentru a putea aplica strategiile menționate mai sus, este necesară identificarea tuturor căilor între nodurile de început și cele de sfârșit. Problema îdentificării tuturor câilor într-un graf este una dificilă dar în cazul grafurilor de tipare, datorită naturii lor, poate fi abordată (grafurile de tipare sunt grafuri orientate aciclice de dimensiune redusă). 
+Pentru a putea aplica strategiile menționate mai sus, este necesară identificarea tuturor căilor între nodurile de început și cele de sfârșit. Problema identificării tuturor câilor într-un graf este una dificilă dar în cazul grafurilor de tipare, datorită naturii lor, poate fi abordată (grafurile de tipare sunt grafuri orientate aciclice de dimensiune relativ redusă). 
 
 \begin{defi}
-Se notează cu $I_W$ intervalul minim care conține mulțimea tuturor indexilor care pot reprezenta puncte de despărțire pentru cuvântul $W$.
+Se notează cu $I_w$ intervalul minim care conține mulțimea tuturor indexilor care pot reprezenta puncte de despărțire pentru cuvântul $w$.
 \end{defi}
 
 \begin{defi}
-Fie $p_1, p_2, ..., p_n$ o cale într-un graf de tipare $G_W$, cu $p_x$ un tipar potrivit de forma $\langle tipar_x, sup_x, \left[i_x,j_x\right)\rangle$, această cale este un \textbf{lanț de tipare închis} daca 
+Fie $p_1, p_2, ..., p_n$ o cale într-un graf de tipare $G_w$, cu $p_x$ un tipar potrivit de forma $\langle tipar_x, sup_x, \left[i_x,j_x\right)\rangle$, această cale este un \textbf{lanț de tipare închis} daca 
 \begin{equation}
-\bigcup_{1 \leq x \leq n} \left[i_x,j_x\right) = I_W
+\bigcup_{1 \leq x \leq n} \left[i_x,j_x\right) = I_w
 \end{equation}
 Cu alte cuvinte, un lanț de tipare închis este o cale într-un graf de tipare, pentru care primul nod este \textit{un nod de început}, iar ultimul nod este \textit{un nod de sfârșit}.
 \end{defi}
 
-Cum s-ar putea fi identificată eficient multimea tuturor lanțurilor de tipare închise? Această întrebare rămâne descrisă. Pentru a valida metoda descrisă în cadrul acestui experiment una dintre variante este ca din fiecare nod start să se realizeze explorări în lătime și reconstrucția lanțurilor de tipare închise.
+Cum ar putea fi identificată eficient multimea tuturor lanțurilor de tipare închise? Această întrebare rămâne descrisă. Pentru a valida metoda descrisă în cadrul acestui experiment una dintre variante este ca din fiecare nod start să se realizeze explorări în lătime și reconstrucția lanțurilor de tipare închise pe baza acestor explorări.
 
 \subsection{Proprietăți ale lanțurilor de tipare închise}
 
 \begin{defi}
-Fie $l$ un lanț de tipare închis dintr-o mulțime, notăm cu $s_{l}$ \textbf{silibisirea} cuvântului $W$ folosind $l$. De exemplu având lanțul de tipare închis $\langle <a>, 2, \left[ 0, 1 \right)\rangle, \langle <ma>, 5, \left[ 1, 3 \right)\rangle, \langle <tor>, 4, \left[ 3, 6 \right)\rangle$, silabisirea rezultată este $a-ma-tor$. 
+Fie $l$ un lanț de tipare închis dintr-o mulțime $L_w$, notăm cu $s_{l}$ \textbf{silibisirea} cuvântului $w$ folosind $l$. De exemplu având lanțul de tipare închis $\langle <a>, 2, \left[ 0, 1 \right)\rangle, \langle <ma>, 5, \left[ 1, 3 \right)\rangle, \langle <tor>, 4, \left[ 3, 6 \right)\rangle$, silabisirea rezultată este $a-ma-tor$. 
 \end{defi}
 
-Ulterior se va utiliza notația $L_W$ pentru mulțimea tuturor lanțurilor de tipare închise din cadrul unui graf $G_W$.
+Ulterior se va utiliza notația $L_w$ pentru mulțimea tuturor lanțurilor de tipare închise din cadrul unui graf $G_w$.
 
 \begin{defi}
 Trebuie remarcat că există posibilitatea ca două sau mai multe lanțuri de tipare inchise pot avea aceiași silabisire asociată. Ulterior se va face referire la aceste lanțuri de tipare ca fiind \textbf{echivalente}. Fie $l_1$ și $l_2$ două tipare echivalente, în acest caz se introduce notația $l_1 \equiv l_2$.
@@ -310,63 +323,163 @@ Fie $l_1 = \langle <a>, 2, \left[ 0, 1 \right)\rangle, \langle <ma, tor>, 4, \le
 \end{ex}
 
 \begin{defi}
-Considerând $l$ un lanț de tipare închis dintr-o mulțime, $L_W$, notăm cu $\vert l \vert $ \textbf{lungimea} lanțului $l$. Un lanț de lungime 2 este: $\langle <a>, 2, \left[ 0, 1 \right)\rangle, \langle <ma, tor>, 4, \left[ 1, 6 \right)\rangle$.
+Considerând $l$ un lanț de tipare închis dintr-o mulțime, $L_w$, notăm cu $\vert l \vert $ \textbf{lungimea} lanțului $l$. Un lanț de lungime 2 este: $\langle <a>, 2, \left[ 0, 1 \right)\rangle, \langle <ma, tor>, 4, \left[ 1, 6 \right)\rangle$.
 \end{defi}
 
+
+\section{Strategii de predictie a despărțirilor în silabe}
 
 \subsection{Strategie bazată pe numărul de căi dintre nodurile extreme}
 
 O primă idee prin care se poate selecta lanțul de tipare închis care să reprezinte silabisirea unui cuvânt, vine de la observația de mai sus cum că din mulțimea completă de lanțuri de tipare inchise, unele sunt echivalente. 
 
-Extinzând raționamenul, se poate pune întrebarea dacă dimensiunea claselor de echivalență poate fi folosită pentru a identifica silabisirea corectă. 
+Extinzând observația, se poate pune întrebarea dacă dimensiunea claselor de echivalență poate fi folosită pentru a identifica silabisirea corectă. 
 
-Fie $W$ un cuvânt, iar $L_W$ mulțimea tuturor lanțurilor închise identificate din graful de tipare asociat cuvântului $W$. Clasa de echivalență a unui lanț $e$ este $\left[e\right] = \{l \epsilon L_W \vert l \equiv e\}$, notându-se cu $E_{L_W}$ mulțimea tuturor claselor de echivalență a lanțurilor de tipare $L_W$. Se mai notează cu $S_{L_W}$ mulțimea tututor silabisirilor asociate cu $L_W$. Relația $f: S_{L_W} \rightarrow E_{L_W}$ este utilizată pentru a identifica clasa de echivalență asociață cu fiecare silabisire. Utilizând relația $f$, silabisirile posibile ale cuvântului $W$ pot fi ordonate în funcție de cardinalitatea claselor de echivalență. 
+\begin{defi}
+Fie $W$ un cuvânt, iar $L_w$ mulțimea tuturor lanțurilor închise identificate din graful de tipare asociat cuvântului $w$. Clasa de echivalență a unui lanț $e$ este 
+\begin{equation}
+\left[e\right] = \{l \in L_w \vert l \equiv e\}
+\end{equation}
+Se notează cu $E_{L_w}$\textbf{ mulțimea tuturor claselor de echivalență a lanțurilor de tipare} $L_w$. Se mai notează cu $S_{L_w}$ mulțimea tututor silabisirilor asociate cu $L_w$. 
+\end{defi}
+
+În acest context se poate utiliza o relație $f: S_{L_w} \rightarrow E_{L_w}$ pentru a identifica clasa de echivalență asociață cu fiecare silabisire. Utilizând relația $f$, silabisirile posibile ale cuvântului $w$ pot fi ordonate în funcție de cardinalitatea claselor de echivalență. 
 
 Prin acestă strategie se propune ca despărțirea în silabe să fie dată de cea mai numeroasă clasa de echivalentă.
 
 \begin{ex}
-.. example with graph and equivalence classes counts.
+În cadrul figurii \ref{fig:rosil-counting} este ilustrată aplicarea acestei strategii. 
 \end{ex}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/rosil-counting.png}
+    \caption{Aplicarea strategiei numărului de lanțuri închise pentru $G_{elicopter}$}
+    \label{fig:rosil-counting}
+\end{figure}
 
 \subsection{Strategie bazată pe nivelul de suprapunere}
 
 O altă strategie pornește de la presupunerea că un nivel ridicat de suprapunere la între tiparele unui lanț închis duce la o mai bună predicție a silabisirii unui cuvânt.
 
 \begin{defi}
-Având două tipare potrivite în cadrul unui cuvânt la pentru intervalul de îndexi $[i_{P_1}, j_{P_1})$, respectiv $[i_{P_2}, j_{P_2})$ de definește nivelul de potrivire al acestor două tipare ca fiind:
+Având două tipare potrivite în cadrul unui cuvânt la pentru intervalul de îndexi $[i_{p_1}, j_{p_1})$, respectiv $[i_{p_2}, j_{p_2})$ de definește nivelul de potrivire al acestor două tipare ca fiind:
 \begin{equation}
-\omega(P_1, P_2) = \left\{
+\omega(p_1, p_2) = \left\{
 \begin{matrix}
-0, 					& j_{P_1} \leq i_{P_2}\\ 
-max(i_{P_2},j_{P_1)} - min(j_{P_2},i_{P_1}),	& j_{P_1} > i_{P_2} \\
+0, 					& j_{p_1} \leq i_{p_2}\\ 
+max(i_{p_2},j_{p_1)} - min(j_{p_2},i_{p_1}),	& j_{p_1} > i_{p_2} \\
 \end{matrix}
 \right.
 \end{equation}
 \end{defi}
 
 \begin{ex}
-Pentru tiparul $P_1$ potrivit la întervalul $\left[0, 6\right)$ și tiparul $P_2$ potrivit la întervalul $\left[4, 8\right)$ avem $ \sigma(P_1,P_2)=2$
+Pentru tiparul $p_1$ potrivit la întervalul $\left[0, 6\right)$ și tiparul $p_2$ potrivit la întervalul $\left[4, 8\right)$ avem $ \omega(p_1,p_2)=2$
 \end{ex}
 
 \begin{defi}
-Fie $l_1, l_2, ..., l_n$ un lant de tipare închis $L$. Nivelul de suprapunere pentru întreg lanțul este:
+Fie $p_1, p_2, ..., p_n$ un lant de tipare închis $l$. Nivelul de suprapunere pentru întreg lanțul este:
 \begin{equation}
-\Omega(L) = \sum_{i=1}^{n-1}{ \omega(P_i, P_{i+1})}
+\Omega(l) = \sum_{i=1}^{n-1}{ \omega(p_i, p_{i+1})}
 \end{equation}
 \end{defi}
 
-Pornind de la definiția nivelului de suprapunere de la nivelul unui lanț de tipare închis, se poate realiza o ordonare in funcție de acest nivel a lanțurilor închise din cadrul unui graf de tipare al unui cuvânt, iar ulterior să se propună ca silabisire a acelui cuvânt, silabisirea asociată cu lanțul închis cu nivel maxim de suprapunere.
+Pornind de la definiția nivelului de suprapunere de la nivelul unui lanț de tipare închis, se poate realiza o ordonare in funcție de acest nivel a lanțurilor închise din cadrul unui graf de tipare al unui cuvânt, iar ulterior să se propună ca silabisire a acelui cuvânt, silabisirea asociată cu lanțul închis cu nivel maxim de suprapunere. Această strategie este ilustrată în cadrul \ref{fig:rosil-overlapping}.
 
-\begin{ex}
-.. example with graph and overlapping values.
-\end{ex}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/rosil-overlapping.png}
+    \caption{Aplicarea strategiei bazate pe nivelul de suprapunere pentru $G_{copilandru}$}
+    \label{fig:rosil-overlapping}
+\end{figure}
 
 \subsection{Strategie bazată pe distanța dintre nodurile extreme}
 
+A treia strategie propusă încearcă să exploreze presupunerea că, cu cât sunt mai lungi tiparele dintr-un lant închis, cu atât creste probabilitatea ca acest lanț să aibă asociată o silabisire corectă.
+
+Dar cum s-ar putea identifica aceste lanțuri? Un posibil răspuns la această întrebare vine de la observația că lungimea medie a tiparelor dintr-un lanț inchis este invers proporțioanală cu lungimea lanțului. 
+
+Atfel, acestă stategie selecția acelor lanțuri de lungime minimă. Deasemenea, în cazul în care există mai multe lanțuri de lungime minimă, se va alege acela care prezintă mai mai mare grad de suprapunere. 
+
+\begin{ex}
+În cadrul figurii \ref{fig:rosil-shortest} este ilustrată aplicarea acestei strategii. 
+\end{ex}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/rosil-shortest.png}
+    \caption{Aplicarea strategiei drumului minim pentru $G_{perseverent}$}
+    \label{fig:rosil-shortest}
+\end{figure}
+
 \section{Metrici de evaluare}
 
+Odată definite strategiile de mai sus, acestea trebuie validate, iar pentru a le valida, se vor defini doua metrici.
+
 \subsection{Evaluare la nivel de cuvânt}
+
+
+Cea mai simplă variantă este de a considera de a trata despărțirea în silabe ca fiind atomică.
+
+\begin{defi} Fie $w$ un cuvânt, iar $s_p$ o silabisire posibilă a acestui, și $s_e$ silabisirea corectă. Atunci, se definește metrica de evaluare a silabisirii propuse ca fiind:
+
+\begin{equation}
+m_w(s_p,s_e) = \left\{
+\begin{matrix}
+0, 	& $ dacă $ s_p=s_e\\ 
+1,	& $ dacă $ s_p\neq s_e \\
+\end{matrix}
+\right. 
+\end{equation}
+\end{defi}
+
 \subsection{Evaluare la nivel de punct de despărțire}
+
+În anumite cazuri există mai multe despărțiri în silabe corecte (în funcție de context), este necesară si definirea unei metrici cu o granularitate mai mică.
+
+\begin{defi}
+Fie $s$ o despărțire în silabe a unui cuvânt. Mulțimea punctelor de despărțire echivalente despărțirii $s$ este colecția de indexilor acelor litere din cuvânt, care au înaintea lor un punct de despărțire. De exemplu pentru despărțirea $a-ma-tor$, mulțimea punctelor de despărțire este $\{1,3\}$.
+\end{defi}
+
+
+\begin{defi}
+Considerând mulțimea indexilor de despărțire $I_{s_p}$ pentru o silabisire $s_p$ a unui cuvânt, iar $I_{s_e}$ mulțimea indexilor despărțirii corecte a aceluiași cuvânt, se definește metrica $m_d$:
+
+\begin{equation}
+m_d(s_p,s_e) = 1- \frac{\vert I_{s_e} \setminus I_{s_p} \vert}{2 \cdot \vert I_{s_e} \vert} - \frac{\vert I_{s_p} \setminus I_{s_e} \vert}{2 \cdot \vert I_{s_p} \vert}
+\end{equation}
+\end{defi}
+
+Interpretarea metricii de mai sus depinde de două componente: numărul de puncte de despărțire prezise corect și numărul de puncte de despărțire prezise gresit.
+
+\begin{ex}
+Pentru o mai bună întelegere, fie următoarele exemple:
+
+\begin{equation}
+m_d(\{1,3,5\}, \{2,4,6\}) = 1- \frac{3}{2 \cdot 3} - \frac{3}{2 \cdot 3} = 0 
+\end{equation}
+
+\begin{equation}
+m_d(\{1,3,5\}, \{2,3,6\}) = 1- \frac{2}{2 \cdot 3} - \frac{2}{2 \cdot 3} \simeq 0.33 
+\end{equation}
+
+\begin{equation}
+m_d(\{1,3,5\}, \{2,3,5\}) = 1- \frac{1}{2 \cdot 3} - \frac{1}{2 \cdot 3} \simeq 0.66 
+\end{equation}
+
+
+\begin{equation}
+m_d(\{1,3,5\}, \{1,3,5\}) = 1 - \frac{0}{2 \cdot 3} - \frac{0}{2 \cdot 3} = 1 
+\end{equation}
+
+
+\end{ex} 
+
+\section{Algoritm de silabisire folosind tipare secvențiale frecvente}
+
+... todo - pseudocode soluția completă
 
 \section{Detalii de implementare}
 \subsection{Tehnologii utilizate}
