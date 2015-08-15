@@ -478,11 +478,77 @@ m_d(\{1,3,5\}, \{1,3,5\}) = 1 - \frac{0}{2 \cdot 3} - \frac{0}{2 \cdot 3} = 1
 \end{ex} 
 
 \section{Algoritm de silabisire folosind tipare secvențiale frecvente}
+În \ref{algo:rosil} este ilustrat algoritmul complet prin care se poate identifica silabisirea unui cuvânt pornind de la o colecție de tipare secvențiale frecvente și o strategie prin care se alege o silabisire din cadrul mulțimii silabisirilor posibile identificate pe baza tiparelor frecvente.
+\begin{algorithm}
+\SetAlgoLined
+\SetKwFunction{ppg}{splitWord}
 
-... todo - pseudocode soluția completă
+\ppg($P, w, s$) \\
+\KwData{$P$ o colecție de tipare secvențiale frecvente, $w$ cuvântul care se dorește a fi despărțit în silabe, $selectionStrategy$ o strategie de selecție a unei silabisiri din cadrul unei colecții de lanțuri închise de tipare}
+\KwResult{$s_w$ o silabisire a cuvântului $w$} 
 
-\section{Detalii de implementare}
-\subsection{Tehnologii utilizate}
+$M_w = findMatchingPatterns(P,w)$ \\
+$G_w = buildMatchedPatternsGraph(M_w)$ \\
+$Gp_w = prune(G_w)$ \\
+$L_w = findClosedPatternChains(Gp_w)$ \\
+\KwRet $pickSolution(L_w, selectionStrategy)$
+\vspace{.1cm}
+
+\caption{Predicția despărțirii în silabe ale unui cuvânt $w$}
+\label{algo:rosil}
+\end{algorithm}
+
+\chapter{Detalii de proiectare si implementare}
+
+În vederea validării ideilor mai sus prezentate, a fost realizată o implementare în limbajul Java care este descrisă în cele ce urmează.
+
+\section{Tehnologii utilizate}
+
+Soluția a fost implementată folosind următoarele tehnologii:
+
+\begin{itemize}
+	\item \textit{JDK 8} ~\footnote{https://jdk8.java.net/}
+	\item \textit{Gradle} ~\footnote{https://gradle.org/} (pentru compilare si impachetare)
+	\item \textit{Git} ~\footnote{https://git-scm.com/} (pentru versionare)
+\end{itemize}
+
+La nivel de librarii Java au fost folosite următoarele librarii:
+
+\begin{itemize}
+    \item \textit{com.google.guava:guava:18.0} (pentru colecții)
+	\item \textit{org.apache.commons:commons-lang3:3.4} (pentru manipulare de siruri de caractere)
+    \item \textit{com.google.code.gson:gson:1.7.2} (pentru serializare JSON)
+	\item \textit{org.jgrapht:jgrapht-dist:0.9.1} (pentru visualizare de grafuri)
+	\item \textit{jp.ac.titech.cs.se:sparesort:0.2.0} (pentru identicarea de tipare secvențiale frecvente)
+	\item \textit{org.apache.logging.log4j:log4j-core:2.3} (pentru logare)
+    \item \textit{junit:junit:4.12} (pentru unit-teste)
+\end{itemize}
+
+Codul sursă al projectului poate fi consultat la urmatoarea adresa: \begin{center}
+\textbf{\href{https://github.com/adrianulbona/rosil}{https://github.com/adrianulbona/rosil}}
+\end{center}
+
+\section{Organizarea aplicației}
+
+Aplicația implementată în cadrul acestui proiect este organizată în patru pachete, ilustrate în figura \ref{fig:rosil-packages}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/rosil-packages.png}
+    \caption{Pachetele Java ale prototipului implementat}
+    \label{fig:rosil-packages}
+\end{figure}
+
+Pachetul \textit{input} este utilizat pentru a citi setul de cuvinte silabisite si pentru al pregatii pentru procesari ulterioare. Pachetul \textit{pattern} are ca principala responsabilitate identificarea tiparelor secvențiale frecvente din cadrul cuvintelor deja sibabisite si incărcate cu ajutorul pachetului \textit{input}. Componenta de predicție este localizată în cadrul pachetului \textit{predict}, iar în cadrul pachetului \textit{eval} au fost implementate o serie de metrici necesare validarii diverselor strategii de predictie.
+
+Pachetul \textit{predict} este deasemenea compus din mai multe sub-pachete care sunt ilustrate în diagrama ~\ref{fig:rosil-predict-packages}. Sub-pachetul \textit{match} are ca responsabilitate identificarea tiparelor (dintr-o colectie de tipare) care potrivesc un anumit cuvânt, sub-pachetul \textit{graph} modeleaza grafuri de tipare potrivite, în cadrul sub-pachetului \textit{chain} conține abstractizari pentru lanțuri de tipare, iar sub-pachetul \textit{strategy} conține implementari pentru strategiile de selecție ale unei silabificari dintr-o colecție de lanțuri de tipare. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/rosil-predict-packages.png}
+    \caption{Pachetele Java ale prototipului implementat}
+    \label{fig:rosil-predict-packages}
+\end{figure}
 \subsection{Structuri de date}
-\subsection{Organizarea aplicației}
+
 \subsection{Modularizare}

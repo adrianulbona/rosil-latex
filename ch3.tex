@@ -3,4 +3,22 @@
 
 \section{Abordări similare}
 
+Sibabisirea ca si problemă prezintă interes din cel puțin doua motive: în primul rând este necesară o clarificare a conceptului de silabisire (avem silabisire ortografică și silabisire fonetică) iar al doilea motiv ține de problema în sine a prezicerii punctelor de despărțire în silabe ale unui cuvânt. 
+
+Performanța oricărei soluții depinde în mare măsură de definirea clară a problemei. Odată eliminată ambiguitatea cerințelor se pot construi soluții. Fiind o problema în care se cer o serie de predictii, este necesară construirea unui model general, care sa fie folosit pentru a realiza aceste predicitii. Ajunși aici, putem considera problema ca fiind una de învățare automată, iar învățarea automată poate fi realizată, în general, în două feluri: învățare automată supervizată sau învățare automată nesupervizată. 
+
+Învătarea automată supervizată presupune că modelul folosit pentru predicții este construit din exemple de predicție. Învătarea automată nesupervizată construieste modele de predicție fără a avea exemple. 
+
+În contextul problemei de silabisire, în cadrul ~\cite{bib:marchand2009automatic} se realizeaza o sinteza a soluțiilor curente pentru limba engleză și se definesc doua clase de soluții: soluții bazate pe învătare automată supervizată și soluții bazate pe reguli. Soluțiile bazate pe reguli prezintă un mare dezavantaj, deoarece regulile sunt dependente de limbă, deasemenea este necesară o bună cunoastere a limbii respective din partea celui care implementează o astfel de soluție.
+
+Pentru limba română, au fost propuse o serie de soluții pentru această problemă, în cadrul ~\cite{bib:dinu2004despartirea} fiind descrisă construcția unei baze de date a silabelor limbii române, iar în ~\cite{bib:barbu2008romanian} este descrisă un dicționar pentru despărțiri în silabe în care se are în vedere și ambiguitatea anumitor despărțiri în functie morfologia cuvintelor. Ulterior, s-au realizat și o serie de experimente folosind tehnici de învățare automată pentru a rezolva problema silabisirii, aceastea fiind descrise în ~\cite{bib:dinu2013romanian}.
+
+Pentru soluții independente de limba, în ~\cite{bib:liang1983word} este prezentată o metodă pentru silabisirea ortografică care stă la baza sistemului \LaTeX și care se folosește de o serie de tipare si anti-tipare pentru a realiza predicții de despărțiri în silabe. O altă metodă îndependentă de limbă este prezentată în cadrul ~\cite{bib:kiraz1998multilingua}, unde se utilizeaza automate finite. 
+
+Din perspectiva recunoașterii vorbirii, în cadrul ~\cite{bib:hunt1980experiments} este prezentată posibilitatea identificării silabelor din secvențe de sunete, iar în ~\cite{bib:damper1997pronunciation} este propusă o metodă de sinteză a vorbirii bazată pe analogie, care poate fi folosită ca model pentru o soluție de silabisire la nivel de limbaj scris. 
+
 \section{Tehnici/Tehnologii/Surse folosite}
+
+O metodă eficientă prin care pot fi identificate tipare secvențiale frecvente este ilustrată în ~\cite{bib:wang2004bide}. 
+
++ string matching 1-2 refs.
