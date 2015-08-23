@@ -1,14 +1,15 @@
 \chapter{Obiective}
 \label{cap:obiective-specificatii}
 \section{Obiective}
-Contribuția principală asteptată de la acest proiect ține de dezvoltarea unei metode prin care se pot obține silabisiri ale cuvintelor din limba română, cu precizie ridicată. 
+Contribuția principală asteptată de la acest proiect ține de dezvoltarea unei metode prin care se pot obține silabisiri ale cuvintelor scrise, cu precizie ridicată. 
 
-Pe lângă acest obiectiv general se mai urmăresc și următoarele sub-obiective: 
+Pe lângă acest obiectiv general trebuie avute în vedere și următoarele cerințe: 
 
 \begin{itemize}
-\item Scalabilitate la nivelul timpului de execuție
-\item Înglobarea excepțiilor lingvistice în cadrul soluției
-\item Tratarea silabificărilor dependente de context
-\item Identificarea unor metrici pentru validarea rezultatelor
-\item ... 
+\item \textit{Genericitate la nivel de limba}. Se urmărește o identificarea unei soluții generale, ca să funcționeze cel puțin la nivelul familiilor de limbi.
+\item \textit{Scalabilitate la nivelul timpului de execuție}. Este necesar ca despărțirile în silabe să se realizeze cât mai rapid posibil, mai ales în contextul sintezei de voce. 
+\item \textit{Înglobarea excepțiilor lingvistice în cadrul soluției}. Acest obiectiv, deși antitetic cu primul, trebuie cel puțin avut în vedere.
+\item \textit{Tratarea silabificărilor dependente de context}. Cel puțin în cadrul limbii române, despărțirea în silabe poate fi ambiguă, depinzând de contextul în care este realizată.
+\item \textit{Identificarea unui set de metrici pentru validarea rezultatelor.}
+
 \end{itemize}

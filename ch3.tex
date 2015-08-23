@@ -1,24 +1,36 @@
 \chapter{Studiu bibliografic}
 \label{cap:studiu-bibliografic}
 
-\section{Abordări similare}
+În cadrul acestui capitol, problema silabisirii va fi încadrată într-o categorie mai generală de probleme și vor fi referite o serie de articole în care sunt descris soluții propuse urmând ca în ultima parte să fie referite o serie de articole din din domeniul extragerii de cunostințe sub formă de tipare secvențiale frecvente.
 
-Sibabisirea ca si problemă prezintă interes din cel puțin doua motive: în primul rând este necesară o clarificare a conceptului de silabisire (avem silabisire ortografică și silabisire fonetică) iar al doilea motiv ține de problema în sine a prezicerii punctelor de despărțire în silabe ale unui cuvânt. 
+\section{Silabisirea ca problemă de învațare automată}
+
+Sibabisirea ca problemă poate fi privită din două perspective: în primul rând este necesară o clarificare a conceptului de silabisire (avem silabisire ortografică și silabisire fonetică) iar al doilea motiv ține de problema în sine a prezicerii punctelor de despărțire în silabe ale unui cuvânt. 
 
 Performanța oricărei soluții depinde în mare măsură de definirea clară a problemei. Odată eliminată ambiguitatea cerințelor se pot construi soluții. Fiind o problema în care se cer o serie de predictii, este necesară construirea unui model general, care sa fie folosit pentru a realiza aceste predicitii. Ajunși aici, putem considera problema ca fiind una de învățare automată, iar învățarea automată poate fi realizată, în general, în două feluri: învățare automată supervizată sau învățare automată nesupervizată. 
 
 Învătarea automată supervizată presupune că modelul folosit pentru predicții este construit din exemple de predicție. Învătarea automată nesupervizată construieste modele de predicție fără a avea exemple. 
 
-În contextul problemei de silabisire, în cadrul ~\cite{bib:marchand2009automatic} se realizeaza o sinteza a soluțiilor curente pentru limba engleză și se definesc doua clase de soluții: soluții bazate pe învătare automată supervizată și soluții bazate pe reguli. Soluțiile bazate pe reguli prezintă un mare dezavantaj, deoarece regulile sunt dependente de limbă, deasemenea este necesară o bună cunoastere a limbii respective din partea celui care implementează o astfel de soluție.
+\section{Soluții propuse pentru problema silabisirii}
 
-Pentru limba română, au fost propuse o serie de soluții pentru această problemă, în cadrul ~\cite{bib:dinu2004despartirea} fiind descrisă construcția unei baze de date a silabelor limbii române, iar în ~\cite{bib:barbu2008romanian} este descrisă un dicționar pentru despărțiri în silabe în care se are în vedere și ambiguitatea anumitor despărțiri în functie morfologia cuvintelor. Ulterior, s-au realizat și o serie de experimente folosind tehnici de învățare automată pentru a rezolva problema silabisirii, aceastea fiind descrise în ~\cite{bib:dinu2013romanian}.
+În contextul problemei de silabisire, în cadrul ~\cite{bib:marchand2009automatic} se realizeaza o sinteza a soluțiilor curente pentru limba engleză și se definesc doua clase de soluții: soluții bazate pe învătare automată supervizată și soluții bazate pe reguli. Soluțiile bazate pe reguli prezintă un mare dezavantaj, deoarece regulile sunt dependente de limbă, si este necesară o bună cunoastere a limbii respective din partea celui care implementează o astfel de soluție.
 
-Pentru soluții independente de limba, în ~\cite{bib:liang1983word} este prezentată o metodă pentru silabisirea ortografică care stă la baza sistemului \LaTeX și care se folosește de o serie de tipare si anti-tipare pentru a realiza predicții de despărțiri în silabe. O altă metodă îndependentă de limbă este prezentată în cadrul ~\cite{bib:kiraz1998multilingua}, unde se utilizeaza automate finite. 
+Pentru soluții independente de limba, în ~\cite{bib:liang1983word} este prezentată o metodă pentru silabisirea ortografică care stă la baza sistemului \LaTeX și care se folosește de o serie de tipare si anti-tipare pentru a realiza predicții de despărțiri în silabe. O altă metodă îndependentă de limbă este prezentată în cadrul ~\cite{bib:kiraz1998multilingual}, unde se utilizeaza automate finite. 
 
 Din perspectiva recunoașterii vorbirii, în cadrul ~\cite{bib:hunt1980experiments} este prezentată posibilitatea identificării silabelor din secvențe de sunete, iar în ~\cite{bib:damper1997pronunciation} este propusă o metodă de sinteză a vorbirii bazată pe analogie, care poate fi folosită ca model pentru o soluție de silabisire la nivel de limbaj scris. 
 
-\section{Tehnici/Tehnologii/Surse folosite}
+\section{Soluții de silabisire pentru limba română}
 
-O metodă eficientă prin care pot fi identificate tipare secvențiale frecvente este ilustrată în ~\cite{bib:wang2004bide}. 
+Pentru limba română, au fost propuse o serie de soluții pentru această problemă, în cadrul ~\cite{bib:dinu2004despartirea} fiind descrisă construcția unei baze de date a silabelor limbii române, iar în ~\cite{bib:barbu2008romanian} este descrisă un dicționar pentru despărțiri în silabe în care se are în vedere și ambiguitatea anumitor despărțiri în functie morfologia cuvintelor. Ulterior, s-au realizat și o serie de experimente folosind tehnici de învățare automată pentru a rezolva problema silabisirii, aceastea fiind descrise în ~\cite{bib:dinu2013romanian}.
 
-+ string matching 1-2 refs.
+
+\section{Tipare secvențiale}
+
+Din perspectiva secvențialitătii silabelor se pot urmării tehnici generale de extragere de tipare frecvente secvențiale descrise în \cite{bib:agrawal1995mining} sau soluții mai recente cum ar fi algoritmul BIDE, descris în \cite{bib:wang2004bide} sau gapBIDE \cite{bib:gapbide} o variantă a aceluiași algoritm care permite identificarea de tipare cu goluri. 
+
+Pe scurt, aceste tehnici încearcă să identifice posibile tipare frecvente dintr-o colecție de secvente, pornind de la subsecvențe frecvente de dimensiune redusă si extinzându-le pe acestea în mai multe rânduri. Aplicațiile pentru aceste tipare pot fi diverse, dar dintre acestea pot fi mentionațe câteva: detecția tiparelor de intrusiune, detecția de secvențe de instrucțiuni de programe care conțin defecte sau detecția tiparelor de comportament ale utilizatorilor în cadrul aplicațiilor web sau din cadrul telefoanelor inteligente.
+
+\section{Algoritmi de cautare în siruri de caractere}
+
+Acest subiect este de interes într-o în vederea identificării prezentei unor tipare secvențiale frecvente în cadrul cuvintelor, care sunt reprezentate prin siruri de caractere. Soluția naivă la această problemă presupune identificarea tuturor sub-șirurilor de caractere si verificarea ca unul dintre sub-șiruri să fie cel cautat. În \cite{bib:knuth1977fast} este prezentat un algoritm clasic care rezolva această problema, iar în  \cite{bib:baeza1992new} și \cite{bib:baeza1996faster} sunt prezentate alte două soluții de căutare aproximativă.
+

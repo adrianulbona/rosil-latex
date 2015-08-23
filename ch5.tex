@@ -16,7 +16,7 @@ Principalele etape ale metodei sunt următoarele:
 \begin{enumerate}
 \item Identificarea tiparelor frecvente dintr-un set de cuvinte despărțite în silabe și indexarea acestora.
 \item Identificarea tiparelor care prezintă un grad ridicat de potrivire în cadrul cuvântului care se dorește a fi despărțit în silabe
-\item Clasificarea acestor tipare în funcție poziția în cuvânt pe care au "potrivit-o" (început, sfârșit, interior).
+\item Clasificarea acestor tipare în funcție poziția în cuvânt pe care au \textit{potrivit-o} (început, sfârșit, interior).
 \item Construirea unui graf cu aceste tipare pe baza potrivirii dintre aceste tipare
 \item Eliminarea nodurilor izolate din acest graf
 \item Pe baza unor strategii de predicție, se va alege o cale sau mai multe în acest graf, reprezentând soluția propusă sau soluțiile soluțiile propuse pentru despărțirea în silabe.
@@ -61,7 +61,9 @@ Sup.& Total & Lung. 1 & Lung. 2 & Lung. 3 & Lung. 4 & Lung. 5 & Lung. 6 & Lung. 
 \caption{Numărul de tipare frecvente închise pentru setul de date RoSyllabiDict} 
 \end{table}
 
-Alegerea unui suport minim cat mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei, dar pe de altă parte va avea o influentă negativă asupra timpului de execuție. 
+Tiparele descrise in tabela precedentă au fost identificate folosind algoritmul BIDE, prin execuții succesive în care valoarea suportului minim a fost variată.
+
+Alegerea unui suport minim cât mai mic asigură prezența a cât mai multor tipare în colecția de tipare folosite ulterior de metodă. Aceasta va creste precizia metodei, dar pe de altă parte va avea o influentă negativă asupra timpului de execuție. 
 
 Cu cât numărul de tipare este mai mare, cautarea de potriviri devine mai lentă, iar pentru a creste performanța, acestea pot fi indexate. În tabelul \ref{table:sdb_patterns} sunt prezentate o serie de tipare frecvente. Pentru a le indexa metoda se folosește de o tabela de disperie în care valorile cheilor vor fi reprezentate de silabele concatenate continute de tipare. Un astfel de exemplu se regăseste în cadrul tabelului \ref{table:sdb_index}. 
 
@@ -138,6 +140,34 @@ $(<tor>, 4)$  		& $\left[4,6\right)$\\
 \label{table:sdb_pattern_match}               
 \end{table}  
 
+În cadrul algoritmului \ref{algo:findMatchedPatterns} este prezentat pseudocodul unei posibile implementări.
+
+\begin{algorithm}[H]
+\vspace{.5cm}
+\SetAlgoLined
+\SetKwFunction{ppg}{findMatchedPatterns}
+
+\ppg($P, w$) \\
+\KwData{$HP$ o colecție indexată de tipare secvențiale frecvente, $w$ un cuvânt pentru care nu se știe silabificarea}
+\KwResult{$P_w$ o listă de tipare frecvente prezente în cadrul cuvântului $w$} 
+
+$P_w = \emptyset$ \\
+$S_w = findAllSubstringsWithIndices(w)$ \\
+\For{ $indexedSubstring$ in $S_w$}{ 
+	$s = substringFrom(indexedSubstring)$ \\
+	\If{$hasKey(HP, s)$} {
+		$p = getPattern(HP, s)$ \\
+		$i = indicesFrom(indexedSubstring)$ \\
+		$P_w = P_w \cup $ \{<p, i>\}\\
+	}
+}
+\KwRet $P_w$
+\caption{Identificarea tiparelor frecvente pentru cuvântul $w$}
+\label{algo:findMatchedPatterns}
+\vspace{.5cm}
+\end{algorithm}
+\vspace{1cm}
+
 Pentru ca ulterior sa se poată identifica posibile despărțiri în silabe este necesară clasificarea tiparelor frecvente potrivite. Astfel, există patru tipuri de tipare:  
 
 \begin{itemize}
@@ -146,6 +176,8 @@ Pentru ca ulterior sa se poată identifica posibile despărțiri în silabe este
 \item tipare de \textbf{sfârșit}: ($<ma, tor>$,2), ($<tor>$,4).  
 \item tipare \textbf{complete} (acele tipare frecvente care inglobeaza întreg cuvântul de despărțit).
 \end{itemize}
+
+
 
 Odată identificate aceste tipare frecvente se pune problema organizării acestora în vederea reconstrucției cuvântului din tipare frecvente. Aceste reconstrucții pot reprezinta posibile despătiri corecte în silabe. 
 
@@ -201,6 +233,32 @@ Un \textbf{graf de tipare frecvente} pentru cuvântul $w$, este $G_w = \langle P
     \label{fig:rosil-amator}
 \end{figure}
 
+La nivelul algoritmului \ref{algo:buildMatchedPatternGraph} este prezentată o metodă prin care se poate construi un graf de tipare pentru un anumit cuvânt pornind de la o mulțime de secvențe frecvente potrivite în cadrul acelui cuvânt. Nodurile grafului rezultat sunt reprezentate de mulțimea inițială de tipare potrivite, iar pentru căile din graf se construiește mulțimea tuturor perechilor de noduri și se filtrează doar cele care se află într-o relație de extensie.
+
+\begin{algorithm}
+\SetAlgoLined
+\SetKwFunction{ppg}{buildMatchedPatternsGraph}
+
+\ppg($M_w$) \\
+\KwData{$M_w$ o colecție de tipare frecvente potrivite în cadrul cuvântului $w$}
+\KwResult{$G_w$ un graf de tipare frecvente potrivite în cadrul cuvântului $w$} 
+
+$E_w = \emptyset$ \\
+$C_{M_w} = M_w \times M_w$ \\
+\For{ $\langle p_1, p_2 \rangle$ in $C_{M_w}$}{
+	\If{$p_1 \curvearrowright p_2$} {
+		$E_w = E_w \cup $ \{$\langle p_1, p_2 \rangle$\}\\
+	}
+}
+$G_w = \langle M_w, E_w \rangle$ \\
+\KwRet $G_w$
+\vspace{.1cm}
+
+\caption{Construcția grafului de tipare pentru $w$}
+\label{algo:buildMatchedPatternGraph}
+\end{algorithm}
+
+
 \subsection{Interpretarea grafului de tipare frecvente}
 
 Odată construit graful de tipare frecvente, se pune întrebarea dacă pe baza acestuia, se poate dezvolta o metodă de silabisire? 
@@ -215,23 +273,22 @@ Dar până se ajungă la aceste strategii trebuie menționat că în realitate, 
 
 \subsection{Optimizarea grafului de tipare frecvente}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/rosil-amator-prunned.png}
+    \caption{Graful de tipare pentru cuvântul \textit{amator}}
+    \label{fig:rosil-amator-prunned}
+\end{figure}
+
 Pornind de la observația de mai sus și analizând natura grafurile de tipare, se pot identifica două categorii de noduri a căror utilitate este inexistentă în vederea identificării căilor între noduri de început și noduri de sfârsit. Aceste categorii sunt:
 \begin{itemize}
 \item nodurile la care nu se poate ajunge din niciun nod de start.
 \item nodurile din care nu se poate ajunge la niciun nod de sfârșit. 
 \end{itemize}
 
-
 \begin{ex}
 În cadrul figurii \ref{fig:rosil-amator-prunned} se poate observa graful de tipare $G_{amator}$ după eliminarea nodurilor izolate.
 \end{ex}
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/rosil-amator-prunned.png}
-    \caption{Graful de tipare pentru cuvântul \textit{amator}}
-    \label{fig:rosil-amator-prunned}
-\end{figure}
 
 Aceste noduri pot fi eliminate fără a altera soluțiile de silabisire identificate. O posibilă soluție pentru eliminarea acestora este descrisă în cadrul algoritmului \ref{algo:prunning}. 
 
@@ -243,7 +300,7 @@ Acesta are două etape:
 
 Eliminând nodurile izolate după aceste două etape, rezultă un graf de dimensiune mai mică. Cele două etape se aplică recursiv până când în cadrul primei etape nu mai este identificat niciun nod izolat. 
 
-\begin{algorithm}[h!]
+\begin{algorithm}[H]
 \SetAlgoLined
 \SetKwFunction{ppg}{prunePatternGraph}
 
@@ -304,7 +361,33 @@ Fie $p_1, p_2, ..., p_n$ o cale într-un graf de tipare $G_w$, cu $p_x$ un tipar
 Cu alte cuvinte, un lanț de tipare închis este o cale într-un graf de tipare, pentru care primul nod este \textit{un nod de început}, iar ultimul nod este \textit{un nod de sfârșit}.
 \end{defi}
 
-Cum ar putea fi identificată eficient multimea tuturor lanțurilor de tipare închise? Această întrebare rămâne descrisă. Pentru a valida metoda descrisă în cadrul acestui experiment una dintre variante este ca din fiecare nod start să se realizeze explorări în lătime și reconstrucția lanțurilor de tipare închise pe baza acestor explorări.
+Cum ar putea fi identificată eficient multimea tuturor lanțurilor de tipare închise? Această întrebare rămâne descrisă. Pentru a valida metoda descrisă în cadrul acestui experiment una dintre variante este ca din fiecare nod start să se realizeze explorări în lătime și reconstrucția lanțurilor de tipare închise pe baza acestor explorări. 
+
+În cadrul algoritmului \ref{algo:findClosedPatternChains} este schițată idea de mai sus.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwFunction{ppg}{findClosedPatternChains}
+
+\ppg($G_w$) \\
+\KwData{$M_w$ un graf de tipare frecvente asociat cuvântului $w$}
+\KwResult{$L_w$ un set de lanțuri de tipare inchise} 
+
+
+$L_w = \emptyset$ \\
+$SV_{G_w} = findStartVertices(G_w)$ \\
+$EV_{G_w} = findEndVertices(G_w)$ \\
+$T = SV_{G_w} \times EV_{G_w}$ \\
+\For{ $\langle startNode, endNode \rangle$ in $T$}{
+	$L_{startNode-endNode} = findPathsBetween(startNode, endNode)$ \\
+	$L_w = E_w \cup  \{L_{startNode-endNode}\}$\\
+}
+\KwRet $L_w$
+\vspace{.1cm}
+
+\caption{Identificarea lanturilor de tipare închise din cadrul unui graf de tipare}
+\label{algo:findClosedPatternChains}
+\end{algorithm}
 
 \subsection{Proprietăți ale lanțurilor de tipare închise}
 
@@ -353,7 +436,7 @@ Prin acestă strategie se propune ca despărțirea în silabe să fie dată de c
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/rosil-counting.png}
+    \includegraphics[width=0.6\textwidth]{figures/rosil-counting.png}
     \caption{Aplicarea strategiei numărului de lanțuri închise pentru $G_{elicopter}$}
     \label{fig:rosil-counting}
 \end{figure}
@@ -385,15 +468,17 @@ Fie $p_1, p_2, ..., p_n$ un lant de tipare închis $l$. Nivelul de suprapunere p
 \end{equation}
 \end{defi}
 
-Pornind de la definiția nivelului de suprapunere de la nivelul unui lanț de tipare închis, se poate realiza o ordonare in funcție de acest nivel a lanțurilor închise din cadrul unui graf de tipare al unui cuvânt, iar ulterior să se propună ca silabisire a acelui cuvânt, silabisirea asociată cu lanțul închis cu nivel maxim de suprapunere. Această strategie este ilustrată în cadrul \ref{fig:rosil-overlapping}.
-
-
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/rosil-overlapping.png}
+    \includegraphics[width=0.7\textwidth]{figures/rosil-overlapping.png}
     \caption{Aplicarea strategiei bazate pe nivelul de suprapunere pentru $G_{copilandru}$}
     \label{fig:rosil-overlapping}
 \end{figure}
+
+Pornind de la definiția nivelului de suprapunere de la nivelul unui lanț de tipare închis, se poate realiza o ordonare in funcție de acest nivel a lanțurilor închise din cadrul unui graf de tipare al unui cuvânt, iar ulterior să se propună ca silabisire a acelui cuvânt, silabisirea asociată cu lanțul închis cu nivel maxim de suprapunere. Această strategie este ilustrată în cadrul \ref{fig:rosil-overlapping}.
+
+
+
 
 \subsection{Strategie bazată pe distanța dintre nodurile extreme}
 
@@ -407,9 +492,9 @@ Atfel, acestă stategie selecția acelor lanțuri de lungime minimă. Deasemenea
 În cadrul figurii \ref{fig:rosil-shortest} este ilustrată aplicarea acestei strategii. 
 \end{ex}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/rosil-shortest.png}
+    \includegraphics[width=0.8\textwidth]{figures/rosil-shortest.png}
     \caption{Aplicarea strategiei drumului minim pentru $G_{perseverent}$}
     \label{fig:rosil-shortest}
 \end{figure}
@@ -479,11 +564,22 @@ m_d(\{1,3,5\}, \{1,3,5\}) = 1 - \frac{0}{2 \cdot 3} - \frac{0}{2 \cdot 3} = 1
 
 \section{Algoritm de silabisire folosind tipare secvențiale frecvente}
 În \ref{algo:rosil} este ilustrat algoritmul complet prin care se poate identifica silabisirea unui cuvânt pornind de la o colecție de tipare secvențiale frecvente și o strategie prin care se alege o silabisire din cadrul mulțimii silabisirilor posibile identificate pe baza tiparelor frecvente.
+
+Pentru implementarea acestuia se pot utiliza algoritmii mai sus descriși:
+
+\begin{itemize}
+\item Identificarea tiparelor potrivite: algoritmul~\ref{algo:findMatchedPatterns}
+\item Construirea grafului de tipare: algoritmul~\ref{algo:buildMatchedPatternGraph}
+\item Optimizarea grafului de tipare: algoritmul~\ref{algo:prunning}
+\item Identificarea lanțurilor de tipare închise: algoritmul~ \ref{algo:findClosedPatternChains}
+\end{itemize}
+
+
 \begin{algorithm}
 \SetAlgoLined
 \SetKwFunction{ppg}{splitWord}
 
-\ppg($P, w, s$) \\
+\ppg($P, w$) \\
 \KwData{$P$ o colecție de tipare secvențiale frecvente, $w$ cuvântul care se dorește a fi despărțit în silabe, $selectionStrategy$ o strategie de selecție a unei silabisiri din cadrul unei colecții de lanțuri închise de tipare}
 \KwResult{$s_w$ o silabisire a cuvântului $w$} 
 
@@ -492,11 +588,13 @@ $G_w = buildMatchedPatternsGraph(M_w)$ \\
 $Gp_w = prune(G_w)$ \\
 $L_w = findClosedPatternChains(Gp_w)$ \\
 \KwRet $pickSolution(L_w, selectionStrategy)$
-\vspace{.1cm}
+\vspace{1cm}
 
 \caption{Predicția despărțirii în silabe ale unui cuvânt $w$}
 \label{algo:rosil}
 \end{algorithm}
+
+Având o soluție pentru identificarea unei silabificări ale unui cuvând pornind de la un set indexat de tipare frecvente, este necesară obținerea acestora în prima fază. Acesta poate fi obținută cu ajutorul algoritmului ~\ref{algo:fse}. Indexarea acestora nu este descrisă aici, reprezentând doar utilizarea unei structuri cum ar fi o tabelă de dispersie pentru a stoca tipare identificate. 
 
 \chapter{Detalii de proiectare si implementare}
 
@@ -518,7 +616,9 @@ La nivel de librarii Java au fost folosite următoarele librarii:
     \item \textit{com.google.guava:guava:18.0} (pentru colecții)
 	\item \textit{org.apache.commons:commons-lang3:3.4} (pentru manipulare de siruri de caractere)
     \item \textit{com.google.code.gson:gson:1.7.2} (pentru serializare JSON)
-	\item \textit{org.jgrapht:jgrapht-dist:0.9.1} (pentru visualizare de grafuri)
+    \item \textit{jgraph:jgraph:5.13.0} (pentru abstractizare și manipulare de grefuri)
+	\item \textit{org.jgrapht:jgrapht-dist:0.9.1} (pentru visualizare de 
+grafuri)
 	\item \textit{jp.ac.titech.cs.se:sparesort:0.2.0} (pentru identicarea de tipare secvențiale frecvente)
 	\item \textit{org.apache.logging.log4j:log4j-core:2.3} (pentru logare)
     \item \textit{junit:junit:4.12} (pentru unit-teste)
@@ -534,21 +634,79 @@ Aplicația implementată în cadrul acestui proiect este organizată în patru p
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/rosil-packages.png}
+    \includegraphics[width=0.9\textwidth]{figures/rosil-packages.png}
     \caption{Pachetele Java ale prototipului implementat}
     \label{fig:rosil-packages}
 \end{figure}
 
 Pachetul \textit{input} este utilizat pentru a citi setul de cuvinte silabisite si pentru al pregatii pentru procesari ulterioare. Pachetul \textit{pattern} are ca principala responsabilitate identificarea tiparelor secvențiale frecvente din cadrul cuvintelor deja sibabisite si incărcate cu ajutorul pachetului \textit{input}. Componenta de predicție este localizată în cadrul pachetului \textit{predict}, iar în cadrul pachetului \textit{eval} au fost implementate o serie de metrici necesare validarii diverselor strategii de predictie.
 
-Pachetul \textit{predict} este deasemenea compus din mai multe sub-pachete care sunt ilustrate în diagrama ~\ref{fig:rosil-predict-packages}. Sub-pachetul \textit{match} are ca responsabilitate identificarea tiparelor (dintr-o colectie de tipare) care potrivesc un anumit cuvânt, sub-pachetul \textit{graph} modeleaza grafuri de tipare potrivite, în cadrul sub-pachetului \textit{chain} conține abstractizari pentru lanțuri de tipare, iar sub-pachetul \textit{strategy} conține implementari pentru strategiile de selecție ale unei silabificari dintr-o colecție de lanțuri de tipare. 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.35\textwidth]{figures/rosil-predict-packages.png}
+    \caption{Organizarea pachetului \textit{predict}}
+    \label{fig:rosil-predict-packages}
+\end{figure}
+
+Pachetul \textit{predict} este deasemenea compus din mai multe sub-pachete care sunt ilustrate în diagrama ~\ref{fig:rosil-predict-packages}. 
+
+Sub-pachetul \textit{match} are ca responsabilitate identificarea tiparelor (dintr-o colectie de tipare) care potrivesc un anumit cuvânt, sub-pachetul \textit{graph} modeleaza grafuri de tipare potrivite, în cadrul sub-pachetului \textit{chain} conține abstractizari pentru lanțuri de tipare, iar sub-pachetul \textit{strategy} conține implementari pentru strategiile de selecție ale unei silabificari dintr-o colecție de lanțuri de tipare. 
+
+\section{Impachetarea aplicației - modularizare}
+
+Prototipul implementat a fost conceput într-o perspectivă modulară. Prin această se dorește o separare a părții în efective de predicție de silabisiri de partea de interfață cu utilizatorul. 
+
+Astfel aplicația poate fi împachetată ca o simplă aplicație desktop după cum este ilustrat în figura \ref{fig:rosil-desktop}.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.3\textwidth]{figures/rosil-predict-packages.png}
-    \caption{Pachetele Java ale prototipului implementat}
-    \label{fig:rosil-predict-packages}
+    \includegraphics[width=0.55\textwidth]{figures/rosil-desktop.png}
+    \caption{Modulul de predicție a silabisirii ca aplicație desktop}
+    \label{fig:rosil-desktop}
 \end{figure}
-\subsection{Structuri de date}
 
-\subsection{Modularizare}
+Dar aceiași componentă poate fi utilizată pentru a construi un serviciu WEB care este accesibil prin internet. În cadrul figurii \ref{fig:rosil-service}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.50\textwidth]{figures/rosil-service.png}
+    \caption{Modulul de predicție a silabisirii ca serviciu web}
+    \label{fig:rosil-service}
+\end{figure}
+
+\section{Ghid de utilizare}
+
+Pentru a executa aplicația, în primă faza este necesară descărcarea codului acesteia. Pentru această este necesar ca utilitarul Git sa fie instalat, odată acesta instalat se poate executa următoarea comanda:
+
+\begin{center}
+\textbf{git clone https://github.com/adrianulbona/rosil.git}
+\end{center} 
+
+Odată descărcată aplicația, din directorul acesteia poate fi executată următoarea comanda pentru a obtine despărți în silabe un anumit cuvânt:
+
+\begin{center}
+\textbf{gradle run -Dword=\textit{castravete}}
+\end{center} 
+
+Rezultatul acestei comenzi are două componente. În primă fază este afișat graful de tipare frecvente pentru cuvântul specificat, similar cu cel din figura 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/rosil-castravete.png}
+    \caption{Exemplu de vizualizare a unui graf de tipare frecvente în timpul execuției}
+    \label{fig:rosil-service}
+\end{figure}
+
+
+\textbf{18:59:17.692 [main] - Reading patterns...}
+
+\textbf{18:59:20.924 [main] - count: ca-stra-ve-te}
+
+\textbf{18:59:20.963 [main] - length: ca-stra-ve-te}
+
+\textbf{18:59:20.969 [main] - overlapping: ca-stra-ve-te}
+
+Se poate observa că pentru fiecare dintre strategiile de selecție a silabisiri este afișat rezultatul. 
+
+Ar mai trebui precizat că, de fiecare dată când se pornește aplicația, colecția de secvențe frecvente este încărcată în memorie, ceea ce durează semnificativ relativ la cât durează predicția efectivă. Acest lucru poate fi optimizat dacă aplicația nu ar fi pornită la fiecare predicție.
+
