@@ -1,24 +1,21 @@
 \chapter{Rezultate teoretice și experimentale}
 \label{cap:rezultate}
 
-\section{Analiza influenței suportului minim asupra preciziei metodei propuse}
+În cadrul acestui capitol vor fi prezentate o serie de rezultate prin care poate fi analizată eficiența metodei propuse în cadrul capitolui\ref{cap:contributii}.
+
+\section{Analiza strategiilor de selecție a lanțurilor de tipare închise}
 
 Pentru rezultate prezentate în cadrul următoarelor tabele s-au folosit jumătate dintre cuvintele silabisite din setul de date RoSyllabiDict ($\sim200.000$) pentru identficarea de tipare frecvente. 
 
 Pentru validarea strategiilor s-au extras aleatoriu, 10.000 de cuvinte din a doua jumătate a setului de cuvinte RoSyllabiDict.
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/rosil-word-precision.png}
-    \caption{ S3 vs S2 vs S1}
-    \label{fig:rosil-counting}
-\end{figure}
+În cazul strategiei care selectează silabisirea idenficată cu cele mai multe lanțuri de tipare inchise, rezultate sunt ilustrate în cadrul tabelului ~\ref{table:counting}.
 
- \begin{table}[h!]
+\begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\ 
+suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\ 
 \hline
 \hline
 50 & 0.898810282887619 & 4719 & 51.85 & 899\\ 
@@ -41,16 +38,17 @@ min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\
 \hline
 5 & 0.859792028980429 & 3672 & 37.01 & 78\\ 
 \hline\end{tabular}
-\label{table:table}
-\caption{counting} 
+\caption{Evaluarea strategiei bazată pe numarul de lanțuri de tipare închise echivalente} 
+\label{table:counting}
 \end{table}
 
+În cadrul tabelei ~\ref{table:overlapping} sunt ilustrate rezultate analizei în cazul strategiei bazată pe suprapuneri. 
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\ 
+suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\ 
 \hline
 \hline
 50 & 0.934182795192563 & 5669 & 62.29 & 899\\ 
@@ -73,15 +71,17 @@ min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\
 \hline
 5 & 0.928531534060846 & 5916 & 59.63 & 78\\ 
 \hline\end{tabular}
-\label{table:table}
-\caption{overlapping} 
+\caption{Evaluarea strategiei bazate pe nivelul de suprapunere} 
+\label{table:overlapping}
 \end{table}
 
- \begin{table}[h!]
+Iar în cadrul tabelei ~\ref{table:shortest} este ilustrată evaluarea strategiei bazate pe lungimea lanțurilor de tipare închise.
+
+\begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
-min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\ 
+suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\  
 \hline
 \hline
 50 & 0.948261855927185 & 6392 & 70.23 & 899\\ 
@@ -104,45 +104,56 @@ min. support & $m_d$ & $\sum m_w$ & percentage full match & unsplitted\\
 \hline
 5 & 0.958024515826585 & 7633 & 76.93 & 78\\ 
 \hline\end{tabular}
-\label{table:table}
-\caption{shortest} 
+\caption{Evaluarea strategiei bazate pe lungimea lanțurilor de tipare închise} 
+\label{table:shortest}
 \end{table}
 
+La nivel comparativ, în cadrul figurilor ~\ref{fig:strategies-word} și \ref{fig:strategies-point} se poate observa evoluția preciziei la nivelul ambelor metrici definite anterior. 
 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/strategies-word.png}
+    \caption{Evaluare comparativă a strategiilor ($\%m_w$)}
+    \label{fig:strategies-word}
+\end{figure}
 
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-sup. & shortest (S3) & shortest\% & overlapping(S2) & overlapping\%& counting(S1) & counting\% \\ 
-\hline
-\hline
-50 & 6392 & 70.23 & 5669 & 62.29 & 4719 & 51.85\\ 
-\hline
-45 & 6458 & 70.27 & 5698 & 62 & 4644 & 50.53\\ 
-\hline
-40 & 6588 & 71.01 & 5830 & 62.84 & 4665 & 50.28\\ 
-\hline
-35 & 6727 & 71.93 & 5908 & 63.17 & 4740 & 50.68\\ 
-\hline
-30 & 6820 & 72.19 & 5933 & 62.8 & 4681 & 49.55\\ 
-\hline
-25 & 6985 & 73.21 & 6036 & 63.26 & 4713 & 49.4\\ 
-\hline
-20 & 7171 & 74.35 & 6076 & 63 & 4808 & 49.85\\ 
-\hline
-15 & 7337 & 75.33 & 6211 & 63.77 & 4773 & 49\\ 
-\hline
-10 & 7500 & 76.32 & 6269 & 63.79 & 4210 & 42.84\\ 
-\hline
-5 & 7633 & 76.93 & 5916 & 59.63 & 3672 & 37.01\\ 
-\hline\end{tabular}
-\label{table:table}
-\caption{Evaluarea strategiilor de silabisire în funcție de suportul minim} 
-\end{table}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/strategies-point.png}
+    \caption{Evaluare comparativă a strategiilor ($m_d$)}
+    \label{fig:strategies-point}
+\end{figure}
 
+Din cele două figuri putem trage două concluzii:
 
+\begin{itemize}
+\item strategia bazată pe lungimea lanțului de tipare închis performează cel mai bine. 
+\item cele două metrici reflectă aleasi rezultate. 
+\end{itemize}
 
 \section{Analiza comparativă cu alte metode de silabisire}
+
+Pentru a încadra rezultatele relativ la alte abordări, au fost preluate rezultate din cadrul articolului ~\cite{bib:dinu2013romanian} și sunt prezentate în cadrul tabelei ~\ref{table:comparison}. 
+
+Trebuie menționat că deși metoda prezentată în cadrul acestei lucrări, nu excelează la precizie, aceasta prezintă un nivel ridicat de genericitate. în cadrul tabelului 
+
+\begin{table}[t!]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Abordare & Acuratețe la nivel de cuvânt\\  
+\hline
+\hline
+RULE & 60,67\%\\ 
+\hline
+\color{cyan} FSP & \color{cyan}76,93\% \\ 
+\hline
+SVM & 90,46\%\\ 
+\hline
+CRF & 95,25\%\\ 
+\hline\end{tabular}
+\caption{Evaluare comparativă cu alte soluții} 
+\label{table:comparison}
+\end{table}

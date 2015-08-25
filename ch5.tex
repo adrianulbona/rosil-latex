@@ -710,3 +710,53 @@ Se poate observa că pentru fiecare dintre strategiile de selecție a silabisiri
 
 Ar mai trebui precizat că, de fiecare dată când se pornește aplicația, colecția de secvențe frecvente este încărcată în memorie, ceea ce durează semnificativ relativ la cât durează predicția efectivă. Acest lucru poate fi optimizat dacă aplicația nu ar fi pornită la fiecare predicție.
 
+\section{Silabisirea ca serviciu web}
+
+După cum a fost prezentat la nivelul diagramei din figura~\ref{fig:rosil-service} modulul de predicție al prototipului implementat, poate fi încapsulat în cadrul unui/unor servicii web.
+
+Această abordare prezintă o serie de avantaje, printre care merită menționate următoarele:
+
+\begin{itemize}
+\item accesibilitate: un serviciu web poate fi accesibil de oriunde, având o conexiune la internet
+\item scalabilitate: un serviciu web poate fi scalat în funcție de volumul de cereri. 
+\end{itemize}
+
+Prototipul implementat explorează și posibilitatea construirii unui astfel de serviciu web, iar odată cu execuția comenzii:
+
+\begin{center}
+\textbf{gradlew rosil-api:run}
+\end{center}
+
+Serviciul web este pornit cu ajutorul comenzii anterioare poate fi accesat cu ajutorul unui browser sau cu următoarea comanda:
+
+\begin{center}
+\textbf{curl http://localhost:4567/rosil/castravete}
+\end{center}
+
+Iar rezultatul prezintă variante de silabisire alte cuvântului /textit{castravate} în formatul JSON:
+
+
+\textbf{\{}
+
+\hspace{1cm}\textbf{"shortest": "cas-tra-ve-te",}
+
+\hspace{1cm}\textbf{"overlapping": "cas-tra-ve-te",}
+
+\hspace{1cm}\textbf{"counting": "cas-tra-ve-te",}
+ 
+\textbf{\}}
+
+\section{Implentarea unui serviciu web de silabisire}
+
+La nivel de implementare pentru a fost utilizată libraria \textbf{spark~\footnote{http://sparkjava.com/}}, care oferă posibilitatea construiti de servicii web cu usurintă după cum este ilustrat în cadrul secvenței de cod Java~\ref{fig:rosil-api}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1.06\textwidth]{figures/rosil-api-code.png}
+    \caption{Secvență de cod Java 8 utilizată pentru construirea serviciului web de silabisire}
+    \label{fig:rosil-api}
+\end{figure}
+
+Întreg serviciu web se foloșeste de clasa \textbf{RosilTracer} care oferă silabisiri pentru un cuvânt, iar de fiecare dată când o cerere de forma \textbf{rosil/\textit{cuvânt}}, rezultatul opținut este serializat în format JSON și este trimis inapoi apelantului.
+
+Similar cu acest serviciu, aplicația web poate fi extinsă cu o serie de servicii care să expună mai multă informație decât predicțiile finale. Spre exemplu, graful de tipare ar putea fi acesat de la un serviciu similar cu cel prezentat anterior. Un graf de tipare expus prezintă avanțajul că oricine l-ar putea folosi pentru a-și construi proprile strategii de predicție a silabisirii. 
