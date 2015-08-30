@@ -1,22 +1,47 @@
-\chapter{Concluzii si direcții posibile de urmat}
+\chapter{Posibile dezvoltări ulterioare}
+
+În cadrul acestei lucrări au fost realizate o serie de experimente prin care s-a demnonstrat că tiparele secvențiale frecvente pot fi utilizate pentru a prezice silabisiri ale cuvintelor. La nivel de implementare, prototipul realizat a fost modelat cu intenția putea fi extins ulterior. În cele ce urmează vor fi schitate o serie de idei care ar putea explorate, pentru a creste performanța metodei.
+
+
+\section{Dezvoltări la nivelul metodei}
+
+\subsection{Utilizarea suportului tiparelor frecvente}
+Dintre cele trei strategii de predicție prezentate anterior, niciuna dintre ele nu consideră suportul tiparelor din identificate la nivelul grafurilor de tipare. Cu sigurantă ar trebui explorată posibitatea ca această informație să fie utilizată pentru a discrimina între lanțurile închise de tipare.
+
+\subsection{Utilizarea de tipare cu goluri}
+Tiparele identificate in prototipul curent sunt continue și conțin silabe întregi. Ar putea explorată posibilitatea ca tiparele sa conțină doar părți de silabe. Intuitiv, astfel de tipare ar trebui sa fie mai generale. 
+Pe de altă parte, astfel de tipare ar schimba felul în care este realizată potrivirea tiparelor în cadrul cuvintelor.
+
+\subsection{Sibabisire sensibilă la context}
+După cum a fost menționat în cateva rânduri, problema silabisirii prezintă un nivel ridicat de ambiguitate. Pentru a trece peste această problemă, o posibilă soluție este întroducerea unui unor contexte în cadrul cărora să nu mai existe ambiguitate. 
+
+Concret silabisirea fonetică și cea ortografică ar putea să fie definească fiecare câte un context de silabisire. La nivelul punerii în practivă a acestei idei, este suficientă o grupare a cuvintelor silabisite în funcție de context, iar ulterior, când se doreste o predicție de silabisire să se specifice și contextul în care se dorește a fi realizată predicția.
+
+\subsection{Validarea genericității} 
+
+O posibilă dezvoltare ulterioare ține de genericitatea metodei. În cadrul experimentelor cuprinse în cadrul acestei lucrări au fost analizată precizia pentru limba română și engleză. Ar fi de interes o evaluare în cazul unor limbi non-indo-europene.
+
+\subsection{Evaluarea impactului caracterelor speciale} 
+
+În cazul unei limbi cum este limba română, nu a fost analizată influența diacriticelor asupra metodei. Impactul acestora asupra tiparelor frecvente și ulterior predicțiilor ar putea fi masurat cu usurintă. 
+
+\section{Dezvoltări la nivelul implementării}
+
+\subsection{Implementarea unei aplicații WEB}
+
+Anterior a fost prezentat felul în care poate fi construit un serviciu WEB care să realizeze predicții de silabisire. Ar fi de interes extinderea acestor servicii, prin care să fie expus si graful de tipare frecvente identificat pentru un anumit cuvânt. Odată accesibil, graful de tipare ar putea fi vizualizat în cadrul unei aplicații WEB. Aplicația web ar putea fi utilizată de specialiști din domeniul lingvisticii, dar ar ușura și trasarea întregii metode.
+
+\subsection{Paralelizarea intregii aplicații}
+
+La nivelul implementării curente, au fost utilizate o serie de procesări paralele, utilizând mecanismele specifice Java 8 (parallel streams, lamba functions, concurrent collections), acestea ar putea fi utilizate la nivelul întregii aplicatii. 
+
+
+\chapter{Concluzii}
 \label{cap:concluzii}
 
 În cadrul acestei lucrări a fost explorată problema silabisirii și a fost propusă o metodă prin care această problemă poate fi rezolvată. Au fost descrise conceptele teoretice utilizate la construcția soluției, a fost realizată o implementare a metodei și au fost evaluate rezultatele acesteia. 
 
-Trebuie menționat că soluția propusă, deși nu oferă cea mai ridicată precizie, comparativ cu alte abordări, vine cu o serie de avantaje: genericitate, nedepinzând de regulile specifice ale unei limbi, performanță la nivelul timpului de execuție și extensibilitate.
-
-Pentru viitor munca existentă ar putea fi continuată în câteva direcții:
-
-\begin{itemize}
-\item Definirea unor \textit{contexte} de silabisire. Silabisirea nu se bazează pe un set de reguli clare, dar asociind anumite reguli cu un anumit context și aborband acele contexte diferit, s-ar putea îmbunătăți precizia soluției.
-
-\item Validarea metodei în cadrul unor limbi non-indoeuropene. 
-
-\item Dezvoltarea unei aplicații web prin care grafurile de tipare sa poată fi analizate de către specialiștii din lingvistică. 
-
-
-
-\end{itemize}
+Trebuie menționat că soluția propusă, deși nu oferă cea mai ridicată precizie, comparativ cu alte abordări, vine cu o serie de avantaje: genericitate (nedepinzând de regulile specifice ale unei limbi), performanță la nivelul timpului de execuție și extensibilitate.
 
 
 
