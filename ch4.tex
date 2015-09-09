@@ -1,11 +1,11 @@
 \chapter{Fundamente teoretice}
 \label{cap:fund-teoretice}
 
-În cadrul acestui capitol vor fi prezentate elementele care stau la baza definirii problemei si a posibilelor componente care ar putea fi utilizate în cadrul acestui proiect pentru a oferi o soluție care să respecte cerințele anterior prezentate. În primele doua secțiuni vor fi definite despărțirea în silabe și tiparele secvențiale, urmând ca în a treia secțiune să fie definit conceptul de tipar secvențial frecvent la nivelul cuvintelor. În cadrul ultimei secțiuni va fi descris BIDE, un algoritm care identifică tipare secvențiale frecvente.
+În cadrul acestui capitol vor fi prezentate elementele care stau la baza definirii problemei si a posibilelor componente care ar putea fi utilizate în cadrul acestui proiect pentru a oferi o soluție care să respecte cerințele anterior specificate. În primele două secțiuni vor fi definite despărțirea în silabe și tiparele secvențiale, urmând ca în a treia secțiune să fie definit conceptul de tipar secvențial frecvent la nivelul cuvintelor. În cadrul ultimei secțiuni va fi descris BIDE, un algoritm care identifică tipare secvențiale frecvente.
 
 \section{Despărțirea în silabe (silabisirea)}
 
-Prin silabisire se înțelege a procesul de a despărți în silabe un cuvânt. Înainte de a oferi câteva exemple, este necesară o clarificare a conceptului de silabă. 
+Prin silabisire se înțelege procesul de a despărți în silabe un cuvânt. Înainte de a oferi câteva exemple, este necesară o clarificare a conceptului de silabă. 
 
 \begin{defi}
 \textbf{Silaba} se definește ca fiind un segment din lanțul vorbirii compus din unul sau mai multe foneme (sunete elementare) pronunțate neîntrerupt într-un singur efort respirator. Orice silabă are ca element principal, inevitabil, o vocală sau, în unele limbi, o consoană sonantă). Elementul principal poate fi însoțit de consoane, semivocale sau grupuri consonantice și semivocalice dispuse înainte, după, sau de ambele părți ale acestuia. \footnote{http://ro.wikipedia.org/wiki/Silabă}
@@ -25,7 +25,7 @@ Din punct de vedere fonetic, despărțirea în silabe a cuvântul \textit{inegal
 
 \section{Tipare secventiale frecvente}
 
-Tiparele secventiale frecvente sunt acele tipare care se regasesc în cadrul unei colecții de secvențe ordonate de numar minim de ori. Acest numar va fi referit ulterior și ca \textit{suport minim}. 
+Tiparele secvențiale frecvente sunt acele tipare care se regăsesc în cadrul unei colecții de secvențe ordonate de număr minim de ori. Acest număr va fi referit ulterior ca \textit{suport minim}. 
 
 În cele ce urmează, se va realiza o introducere formală pentru tiparele secvențiale frecvente, urmând ca după această scurtă întroducere să fie ilustrat modul în care o colecție de cuvinte despărțite în silabe poate fi asociată cu o colecție de secvențe.
 
@@ -45,7 +45,7 @@ Printr-o \textbf{colecție de secvențe $S_{db}$} se înțelege un set de tuple 
 \end{defi}
 
 \begin{ex}
-Un exemplu de astfel colecție de secvențe este prezentat în cadrul tabelului \ref{table:sdb}
+Un exemplu de astfel colecție de secvențe este prezentat în cadrul tabelei \ref{table:sdb}
 \end{ex}
 
 \begin{table}[h]
@@ -65,7 +65,7 @@ $id$ & $s$ \\
 \end{table}
 
 \begin{defi}
-Despre o secvență $s_1=<t_1, t_2, ...,t_n>$ se poate spune ca este \textbf{conținută} de o secvență $s_2=<l_1, l_2, ...,l_m>$ dacă $n \leq m$ și $ \exists i,j$ astfel încât $t_1 = l_i, t_n = l_j$ și $\forall k, i \leq k \leq j \implies t_{k-i} = l_k$. Pentru această incluziune a secvențelor se va utiliza ulterior notația $s_1 \subseteq s_2$.
+Despre o secvență $s_1=<t_1, t_2, ...,t_n>$ se poate spune că este \textbf{conținută} de o secvență $s_2=<l_1, l_2, ...,l_m>$ dacă $n \leq m$ și $ \exists i,j$ astfel încât $t_1 = l_i, t_n = l_j$ și $\forall k, i \leq k \leq j \implies t_{k-i} = l_k$. Pentru această incluziune a secvențelor se va utiliza ulterior notația $s_1 \subseteq s_2$.
 \end{defi}
       
 \begin{defi}
@@ -80,7 +80,7 @@ Pornind de la definiția unei secvențe și a suportului acesteia, se poate intr
 Identificare tiparelor descrise anterior prezintă un interes deosebit, cu aplicabilitate într-o multitudine de domenii, iar după cum va fi ilustrat în capitolele urmatoare, tiparele extrase din cuvinte deja despărțite în silabe pot fi utilizate pentru a construi strategii de predicție a silabisirii cuvintelor. 
 
 \begin{ex}
-Într-un astfel de scenariu în care se dorește identificarea tiparelor frecvente din cuvinte despărțite în silabe, alfabetul colecției de secvențe este reprezentat de mulțimea tuturor posibilelor silabelor, iar fiecare cuvânt reprezintă o secvență. În cadrul tabelului \ref{table:sdb_words} este prezentată o astfel de colecție de secvențe.
+Într-un astfel de scenariu în care se dorește identificarea tiparelor frecvente din cuvinte despărțite în silabe, alfabetul colecției de secvențe este reprezentat de mulțimea tuturor posibilelor silabelor, iar fiecare cuvânt reprezintă o secvență. În cadrul tabelei \ref{table:sdb_words} este prezentată o astfel de colecție de secvențe.
 \end{ex}
 
 \begin{table}[h]
@@ -110,7 +110,7 @@ $id$ & $s$ \\
 \label{table:sdb_words}               
 \end{table}
 
-Pentru colecția de secvențe frecvente din cadrul tabelului \ref{table:sdb_words}, în cadrul tabelului \ref{table:sdb_patterns} sunt ilustrate tiparele frecvente în funcție de diferite valori ale suportului minim. Se va nota cu $(s,sup)$ un tipar frecvent, unde $s$ este tiparul propriu-zis iar $sup$ reprezintă valoarea suportului aceste secvente.
+Pentru colecția de secvențe frecvente din cadrul tabelei \ref{table:sdb_words}, în cadrul tabelei \ref{table:sdb_patterns} sunt ilustrate tiparele frecvente în funcție de diferite valori ale suportului minim. Se va nota cu $(s,sup)$ un tipar frecvent, unde $s$ este tiparul propriu-zis iar $sup$ reprezintă valoarea suportului aceste secvente.
 
 \begin{table}[h!]
 \centering    
@@ -162,17 +162,17 @@ Suport minim & Tipar frecvent\\
 Tiparele identificate dintr-un set mare de cuvinte deja silabisite, pe lângă valoarea lor în contextul analizelor de fonetica și morfologie a limbi, pot fi folosite pentru a automatiza procesul de silabisire, asa cum va fi ilustrat în cadrul capitolului următor.
 
 
-În cadrul sectiunii următoare se va face o scurtă prezentare a unuia dintre algoritmii performanți, cu ajutorul caruia se pot identifica tipare frecvente. 
+În cadrul sectiunii următoare se va face o scurtă prezentare a unuia dintre algoritmii performanți, cu ajutorul căruia se pot identifica tipare secvențiale frecvente. 
 
 \section{Algoritmul BIDE}
 Algoritmul BIDE, prezentat în detaliu în \cite{bib:wang2004bide}, este o soluție capabilă să extragă tipare secventiale frecvente inchise.
 
 \begin{defi}
-Prin \textbf{tipar secvential închis} se întelege un tipar dintr-un set de tipare pentru care nu exista alt tipar care să-l conțină și să aiba același suport. Formal, $s$ este închis dacă $\forall s' \epsilon S_{db}, \nexists (s \subseteq s' \wedge sup_{S_{db}}(s)=sup_{S_{db}}(s'))$.
+Prin \textbf{tipar secvențial închis} se întelege un tipar dintr-un set de tipare pentru care nu există alt tipar care să-l conțină și să aibă același suport. Formal, $s$ este închis dacă $\forall s' \epsilon S_{db}, \nexists (s \subseteq s' \wedge sup_{S_{db}}(s)=sup_{S_{db}}(s'))$.
 \end{defi}  
 
 \begin{defi}
-Prin proiecția unei sevențe $s$ într-o colecție de secvente $S_{db}$ se întelege multimea tuturor acelor subsecvente cu care $s$ \textit{se continuă} secvența $s$. De exemplu, în cadrul colecției de secvențe din cadrul \ref{table:sdb}, proiectia secventei $<A,B>$ este {$<C>,<C, B>,<C>,<B, C, A>$}. Pseudo-proiecția secvenței $s$ reprezintă setul indexi ai extensiilor. 
+Prin proiecția unei secvențe $s$ într-o colecție de secvențe $S_{db}$ se întelege multimea tuturor acelor subsecvențe cu care \textit{se continuă} secvența $s$. De exemplu, în cadrul colecției de secvențe din cadrul \ref{table:sdb}, proiecția secvenței $<A,B>$ este {$<C>,<C, B>,<C>,<B, C, A>$}. Pseudo-proiecția secvenței $s$ reprezintă setul de indexi ai extensiilor. 
 \end{defi}  
 
 
@@ -214,17 +214,17 @@ $LF\_s_p =$ elementele frecvente cu care poate fi extinsă $s_p$
 \label{algo:fse}
 \end{algorithm}
 
-În cadrul algoritmului \ref{algo:fse} este prezentată idea din spatele algoritmului BIDE. Pe scurt, acesta porneste de la un set de tipare de lungime mică, pe care încearcă recursiv să le \textit{crească} atât timp cat suportul lor rămâne peste pragul minim. Varianta prezentată este mult simplificată, algoritmul BIDE complet identifica doar secvențe frecvente închise și adaugă o serie de tehnici de optimizare, cum ar fi eliminarea rapida a tiparelor care nu mai pot fi \textit{crescute}, eficiență la nivelul utilizarii de memorie dar și performanțe bune ca timp de execuție.
+În cadrul algoritmului \ref{algo:fse} este prezentată idea din spatele algoritmului BIDE. Pe scurt, acesta pornește de la un set de tipare de lungime mică, pe care încearcă recursiv să le \textit{crească} atât timp cât suportul lor rămâne peste pragul minim. Varianta prezentată este mult simplificată, algoritmul BIDE complet identifică doar secvențe frecvente închise și adaugă o serie de tehnici de optimizare, cum ar fi eliminarea rapidă a tiparelor care nu mai pot fi \textit{crescute}, eficiență la nivelul utilizarii de memorie dar și performanțe bune ca timp de execuție.
 
 \begin{ex}
 Pentru tabelul \ref{table:sdb}, la o trasare a algoritmului \ref{algo:fse} identificarea tiparelor frecvente este ilustrată de figura \ref{fig:bide-algo} (exemplu preluat din \cite{bib:wang2004bide}):
 \begin{itemize}
 \item în prima fază sunt identificate elementele de lungime 1 ($<A>,<B>,<C>$) si le este calculat suportul.
-\item presupunând că suportul minim este 2, pentru fiecare dintre aceste tipare de lungime 1, se caută extensii în colecția de secvențe. În figură la nivelul 2 sunt prezentate aceste tipare iar alaturi, suportul asociat.
-\item algoritmul avanseaza recursiv pentru fiecare tipar astfel identificat.
+\item presupunând că suportul minim este 2, pentru fiecare dintre aceste tipare de lungime 1, se caută extensii în colecția de secvențe. În figură la nivelul 2 sunt prezentate aceste tipare iar alături, suportul asociat.
+\item algoritmul avansează recursiv pentru fiecare tipar astfel identificat.
 
 \end{itemize}
-Nodurile marcate cu linie continuă reprezintă tiparele frecvente închise. 
+Nodurile marcate cu linie continuă reprezintă tiparele secvențiale frecvente închise. 
 \end{ex}
 
 \begin{figure}[h]
@@ -234,7 +234,7 @@ Nodurile marcate cu linie continuă reprezintă tiparele frecvente închise.
     \label{fig:bide-algo}
 \end{figure}
 
-În \cite{bib:gapbide} algoritmul BIDE este extins, astfel încât să poată identifica si tipare care prezintă goluri. Prin goluri se înțele că tiparul nu reprezintă secvențe continue de elemente. Acest lucru este util în cazurile în care există tipare care au prefixe si postfixe comune, dar variați în interior și se dorește identificarea acestora. La nivelul algoritmului extins se precizează și dimensinea maximă a golurilor (la nivel de număr de elemente din secvențe). 
+În \cite{bib:gapbide} algoritmul BIDE este extins, astfel încât să poată identifica si tipare care prezintă goluri. Prin goluri se înțelege că tiparul nu reprezintă secvențe continue de elemente. Acest lucru este util în cazurile în care există tipare care au un prefix si postfix comun, dar variați în interior, dorindu-se identificarea acestora. La nivelul algoritmului extins se precizează și dimensinea maximă a golurilor (la nivel de număr de elemente din secvențe). 
 
 \begin{ex}  
 Fie doua secvente $<A, A, A, B, A>$ și $<C, A, A, C, A>$. Cu ajutorul algoritmului \textit{gapBIDE} se poate identifica ca tipar frecvent, tiparul $(<A, A, *, A>, 2)$.

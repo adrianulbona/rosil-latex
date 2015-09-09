@@ -9,7 +9,7 @@ Pentru rezultate prezentate în cadrul următoarelor tabele s-au folosit jumăta
 
 Pentru validarea strategiilor s-au extras aleatoriu, 10.000 de cuvinte din a doua jumătate a setului de cuvinte RoSyllabiDict.
 
-În cazul strategiei care selectează silabisirea idenficată cu cele mai multe lanțuri de tipare inchise, rezultate sunt ilustrate în cadrul tabelului ~\ref{table:counting}.
+În cazul strategiei care selectează silabisirea idenficată cu cele mai multe lanțuri de tipare închise, rezultate sunt ilustrate în cadrul tabelei ~\ref{table:counting}.
 
 \begin{table}[h!]
 \centering
@@ -38,7 +38,7 @@ suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\
 \hline
 5 & 0.859792028980429 & 3672 & 37.01 & 78\\ 
 \hline\end{tabular}
-\caption{Evaluarea strategiei bazată pe numarul de lanțuri de tipare închise echivalente} 
+\caption{Evaluarea strategiei bazată pe numărul de lanțuri de tipare închise echivalente} 
 \label{table:counting}
 \end{table}
 
@@ -130,7 +130,7 @@ Din cele două figuri putem trage două concluzii:
 
 \begin{itemize}
 \item strategia bazată pe lungimea lanțului de tipare închis performează cel mai bine. 
-\item cele două metrici reflectă aleasi rezultate. 
+\item cele două metrici reflectă aleași rezultate. 
 \end{itemize}
 
 \newpage
@@ -149,7 +149,7 @@ Abordare & Acuratețe la nivel de cuvânt\\
 \hline
 RULE & 60,67\%\\ 
 \hline
-\color{cyan} FSP & \color{cyan}76,93\% \\ 
+ \textbf{metoda prezentată în cadrul acestei lucrări} & \textbf{76,93\%} \\ 
 \hline
 SVM & 90,46\%\\ 
 \hline
@@ -165,7 +165,7 @@ CRF & 95,25\%\\
 
 Pentru evaluarea acestui set de date, au fost retinute 5000 de cuvinte, iar restul au fost folosite pentru identificarea tiparelor frecvente. 
 
-În cadrul tabelei~\ref{table:counting_en} sunt prezentate rezultatele evaluării pentru strategia bazată pe numărul de tipare cu aceiasi silabisire.
+În cadrul tabelei~\ref{table:counting_en} sunt prezentate rezultatele evaluării pentru strategia bazată pe numărul de tipare cu aceiași silabisire.
 
 \begin{table}[h!]
 \centering
@@ -266,7 +266,7 @@ suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\
 \hline
 2 &	0.9114202601 &	3420 &	69.61 &	87 \\
 \hline\end{tabular}
-\caption{Evaluarea strategiei bazate pe lungimea lanțurilor de tipare închise - limba engleză} 
+\caption{Evaluarea strategiei bazate pe lungimea lanțurilor de tipare închise pentru limba engleză} 
 \label{table:shortest_en}
 \end{table}
 
@@ -285,15 +285,15 @@ suport minim & $m_d$ & $\sum m_w$ & $\%{m_w}$ & cuvinte nedespărțite\\
 \end{figure}
 
 
-Din puncte de vedere comparativ, în cadrul figurilor~\ref{fig:strategies-point-en} și~\ref{fig:strategies-word-en} se pot observa valorile prezentate în tabele anteriore.
+Din punct de vedere comparativ, în cadrul figurilor~\ref{fig:strategies-point-en} și~\ref{fig:strategies-word-en} se pot observa valorile prezentate în tabele anteriore.
 
-După cum o arată și graficele, deși nu s-a obținut aceiași precizie ca și în cazul limbi române, fără vreo modificare a metodei pot fi realizate corect ~7 din 10 predicții corecte. 
+După cum o arată și graficele, deși nu s-a obținut aceiași precizie ca și în cazul limbii române, fără vreo modificare a metodei pot fi realizate corect ~7 din 10 predicții corecte. 
 
 \section{Evaluarea timpului de identificare de tipare frecvente}
 
-Înitial, înainte de a realiza predicții, este necesară identificarea tiparelor frecvente. Pentru a avea o imagine realistă asupra acestei etape, în cadrul tabelei~\ref{table:bide-en} sunt prezentate rezultele masurătorilor în cadrul setul de date conținând cuvinte silabisite în limba engleză.
+Initial, înainte de a realiza predicții, este necesară identificarea tiparelor frecvente. Pentru a avea o imagine realistă asupra timpului de execuție necesar acestei etape, în cadrul tabelei~\ref{table:bide-en} sunt prezentate rezultele masurătorilor în cadrul setul de date conținând cuvinte silabisite în limba engleză.
 
-Trebuie menționat că timpii raportați reprezentă: timpul de citire al datelor de pe disc, parsarea acestora și doar ulterior identificarea tiparelor frecvente.
+Trebuie menționat că timpii raportați reprezintă: timpul de citire al datelor de pe disc, parsarea acestora și  identificarea tiparelor frecvente.
 
 La nivelul~\ref{fig:bide-count-en} este ilustrată evoluția numărului de tipare identificate.
 
@@ -360,7 +360,7 @@ Pentru a evalua timpul de execuție în cazul predicțiilor de silabificări au 
 
 La nivel de hardware s-a folosit o mașină dotată cu procesor Intel i5-3210M @ 2,5 GHz și 12 GB RAM.
 
-Pentru fiecare strategie, în cadrul graficului~\ref{fig:runtime} este prezentat timpul în care silabificările pentru cele 5000 de cuvinte au realizate, cât și timpul mediu pentru o singură predicție.
+Pentru fiecare strategie, în cadrul graficului~\ref{fig:runtime} este prezentat timpul mediu de silabisire (timpul total pentru predicția a 5000 de silabisiri / 5000)
 
 \begin{figure}[h!]
     \centering

@@ -1,7 +1,7 @@
 \chapter{Studiu bibliografic}
 \label{cap:studiu-bibliografic}
 
-În cadrul acestui capitol, problema silabisirii va fi încadrată într-o categorie mai generală de probleme și vor fi referite o serie de articole în care sunt descris soluții propuse urmând ca în ultima parte să fie referite o serie de articole din din domeniul extragerii de cunostințe sub formă de tipare secvențiale frecvente.
+În cadrul acestui capitol, problema silabisirii va fi încadrată într-o categorie mai generală de probleme și vor fi referite o serie de articole în care sunt descrise soluțiile propuse până acum, urmând ca în ultima parte să fie referite o serie de articole din domeniul extragerii de cunostințe sub formă de tipare secvențiale frecvente.
 
 \section{Silabisirea ca problemă de învațare automată}
 
@@ -15,13 +15,13 @@ Performanța oricărei soluții depinde în mare măsură de definirea clară a 
 
 În contextul problemei de silabisire, în cadrul ~\cite{bib:marchand2009automatic} se realizeaza o sinteza a soluțiilor curente pentru limba engleză și se definesc doua clase de soluții: soluții bazate pe învătare automată supervizată și soluții bazate pe reguli. Soluțiile bazate pe reguli prezintă un mare dezavantaj, deoarece regulile sunt dependente de limbă, si este necesară o bună cunoastere a limbii respective din partea celui care implementează o astfel de soluție.
 
-Pentru soluții independente de limba, în ~\cite{bib:liang1983word} este prezentată o metodă pentru silabisirea ortografică care stă la baza sistemului \LaTeX și care se folosește de o serie de tipare si anti-tipare pentru a realiza predicții de despărțiri în silabe. O altă metodă îndependentă de limbă este prezentată în cadrul ~\cite{bib:kiraz1998multilingual}, unde se utilizeaza automate finite. 
+Pentru soluții independente de limba, în ~\cite{bib:liang1983word} este prezentată o metodă pentru silabisirea ortografică care stă la baza sistemului \LaTeX ~ și care se folosește de o serie de tipare si anti-tipare pentru a realiza predicții de despărțiri în silabe. O altă metodă îndependentă de limbă este prezentată în cadrul ~\cite{bib:kiraz1998multilingual}, unde se utilizeaza automate finite. 
 
 Din perspectiva recunoașterii vorbirii, în cadrul ~\cite{bib:hunt1980experiments} este prezentată posibilitatea identificării silabelor din secvențe de sunete, iar în ~\cite{bib:damper1997pronunciation} este propusă o metodă de sinteză a vorbirii bazată pe analogie, care poate fi folosită ca model pentru o soluție de silabisire la nivel de limbaj scris. 
 
 \section{Soluții de silabisire pentru limba română}
 
-Pentru limba română, au fost propuse o serie de soluții pentru această problemă, în cadrul ~\cite{bib:dinu2004despartirea} fiind descrisă construcția unei baze de date a silabelor limbii române, iar în ~\cite{bib:barbu2008romanian} este descrisă un dicționar pentru despărțiri în silabe în care se are în vedere și ambiguitatea anumitor despărțiri în functie morfologia cuvintelor. Ulterior, s-au realizat și o serie de experimente folosind tehnici de învățare automată pentru a rezolva problema silabisirii, aceastea fiind descrise în ~\cite{bib:dinu2013romanian}.
+Pentru limba română, au fost propuse o serie de soluții pentru această problemă, în cadrul ~\cite{bib:dinu2004despartirea} fiind descrisă construcția unei baze de date a silabelor limbii române, iar în ~\cite{bib:BARBU08.495} este descrisă un dicționar pentru despărțiri în silabe în care se are în vedere și ambiguitatea anumitor despărțiri în functie morfologia cuvintelor. Ulterior, s-au realizat și o serie de experimente folosind tehnici de învățare automată pentru a rezolva problema silabisirii, aceastea fiind descrise în ~\cite{bib:dinu2013romanian}.
 
 
 \section{Tipare secvențiale}
@@ -32,5 +32,4 @@ Pe scurt, aceste tehnici încearcă să identifice posibile tipare frecvente din
 
 \section{Algoritmi de cautare în siruri de caractere}
 
-Acest subiect este de interes într-o în vederea identificării prezentei unor tipare secvențiale frecvente în cadrul cuvintelor, care sunt reprezentate prin siruri de caractere. Soluția naivă la această problemă presupune identificarea tuturor sub-șirurilor de caractere si verificarea ca unul dintre sub-șiruri să fie cel cautat. În \cite{bib:knuth1977fast} este prezentat un algoritm clasic care rezolva această problema, iar în  \cite{bib:baeza1992new} și \cite{bib:baeza1996faster} sunt prezentate alte două soluții de căutare aproximativă.
-
+Acest subiect este de interes în vederea identificării prezenței unor tipare secvențiale frecvente în cadrul cuvintelor care sunt reprezentate prin șiruri de caractere. Soluția naivă la această problemă presupune identificarea tuturor sub-șirurilor de caractere și verificarea ca unul dintre sub-șiruri să fie cel căutat. În \cite{bib:knuth1977fast} este prezentat un algoritm clasic care rezolvă această problemă, iar în  \cite{bib:baeza1992new} și \cite{bib:baeza1996faster} sunt prezentate alte două soluții de căutare aproximativă.
